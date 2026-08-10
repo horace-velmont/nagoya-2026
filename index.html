@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나고야 3박4일 동선 초안</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #657084;
+      --line: #d9dee8;
+      --paper: #ffffff;
+      --bg: #f6f8fb;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --green: #13865f;
+      --green-soft: #dff6ec;
+      --amber: #b66a00;
+      --amber-soft: #fff1d6;
+      --red: #c2413f;
+      --red-soft: #ffe2df;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      line-height: 1.55;
+    }
+
+    .page-hero {
+      background: #10243f;
+      color: white;
+      padding: 40px 20px 30px;
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 5vw, 44px);
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: #c9d5e8;
+      font-size: 16px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .hero-card strong {
+      display: block;
+      font-size: 14px;
+      color: white;
+    }
+
+    .hero-card span {
+      color: #c9d5e8;
+      font-size: 13px;
+    }
+
+    .main { padding: 28px 0 44px; }
+    .section { margin-bottom: 28px; }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+
+    .choice-grid,
+    .plan-grid,
+    .recommend {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .choice,
+    .plan,
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .choice-head,
+    .plan-head {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fdfefe;
+    }
+
+    .choice h3,
+    .plan h3,
+    .panel h3 {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+
+    .summary,
+    .panel p,
+    .panel li {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary { margin: 0; }
+
+    .choice-body,
+    .plan-body,
+    .panel {
+      padding: 16px 18px 18px;
+    }
+
+    .route-board {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .route-board h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .route-board .summary {
+      margin-bottom: 14px;
+    }
+
+    .absolute-days {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .absolute-day {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+      overflow: hidden;
+    }
+
+    .absolute-day.full {
+      grid-column: 1 / -1;
+    }
+
+    .absolute-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fdfefe;
+    }
+
+    .absolute-head strong {
+      font-size: 15px;
+    }
+
+    .absolute-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .absolute-slots {
+      display: grid;
+    }
+
+    .absolute-slot {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .absolute-slot:last-child { border-bottom: 0; }
+
+    .slot-time {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .slot-place strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .slot-place span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .absolute-day.plan-a .absolute-head {
+      background: #fffaf0;
+    }
+
+    .absolute-day.plan-b .absolute-head {
+      background: #f0fbf5;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--blue-soft);
+      color: #174ea6;
+    }
+
+    .badge.easy {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .badge.warn {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .badge.hard {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .legs {
+      display: grid;
+      gap: 10px;
+    }
+
+    .leg {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+    }
+
+    .leg strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .clock {
+      display: inline-block;
+      margin-right: 6px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .leg span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .time {
+      min-width: 110px;
+      text-align: right;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .time.long { color: var(--red); }
+
+    .plan-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      background: var(--blue-soft);
+      color: #174ea6;
+      margin-bottom: 10px;
+    }
+
+    .plan-label.warm {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .day-detail {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .day-detail:last-child { margin-bottom: 0; }
+
+    .day-detail h4 {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 15px;
+    }
+
+    .day-detail ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .day-detail li {
+      margin: 5px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .meal-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      overflow: hidden;
+    }
+
+    .meal-card h3 {
+      margin: 0;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fdfefe;
+      font-size: 16px;
+    }
+
+    .meal-row {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .meal-row:last-child { border-bottom: 0; }
+
+    .meal-type {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .meal-place strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .meal-place span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .food-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .food-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+    }
+
+    .food-item.primary {
+      border-color: #f2d39b;
+      background: #fffaf0;
+    }
+
+    .food-item strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .food-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .map-link {
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .map-link:hover {
+      text-decoration: underline;
+    }
+
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .matrix th,
+    .matrix td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    .matrix tr:last-child td { border-bottom: 0; }
+
+    .matrix th {
+      background: #eef3fb;
+      color: #31415a;
+      font-size: 13px;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    .compare-table th:last-child,
+    .compare-table td:last-child {
+      border-right: 0;
+    }
+
+    .compare-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .compare-table th {
+      background: #eef3fb;
+      color: #31415a;
+      font-size: 13px;
+    }
+
+    .compare-time {
+      width: 118px;
+      color: var(--ink);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .compare-table strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--ink);
+    }
+
+    .compare-table span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .plan-a-cell {
+      background: #fffaf0;
+    }
+
+    .plan-b-cell {
+      background: #f0fbf5;
+    }
+
+    .panel ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 26px 0 36px;
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid,
+      .choice-grid,
+      .plan-grid,
+      .recommend {
+        grid-template-columns: 1fr;
+      }
+
+      .leg { grid-template-columns: 1fr; }
+      .food-item { grid-template-columns: 1fr; }
+      .time { text-align: left; }
+      .route-board { padding: 12px; }
+      .absolute-days { grid-template-columns: 1fr; }
+      .meal-grid { grid-template-columns: 1fr; }
+
+      .matrix {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .compare-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-hero">
+    <div class="wrap">
+      <h1>나고야 3박4일 동선 초안</h1>
+      <p class="subtitle">Day 1 지브리파크 · Day 2 나고야 시내 · Day 3 투어 후 A/B · Day 4 출발</p>
+      <div class="hero-grid" aria-label="기본 조건">
+        <div class="hero-card">
+          <strong>공통</strong>
+          <span>Day 1 지브리파크</span>
+        </div>
+        <div class="hero-card">
+          <strong>공통</strong>
+          <span>Day 2 나고야 시내</span>
+        </div>
+        <div class="hero-card">
+          <strong>도착/출발</strong>
+          <span>1일차 09:30 NGO 도착, 4일차 20:00 NGO 출발</span>
+        </div>
+        <div class="hero-card">
+          <strong>선택</strong>
+          <span>Day 3 투어 후 게로/나고야</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap main">
+    <div class="section">
+      <h2>시간표</h2>
+      <div class="route-board" aria-label="나고야 3박4일 대략 동선 순서도">
+        <div class="absolute-days" aria-label="나고야 3박4일 대략 일정표">
+          <div class="absolute-day">
+            <div class="absolute-head">
+              <strong>Day 1 공통</strong>
+              <span>도착 → 지브리파크</span>
+            </div>
+            <div class="absolute-slots">
+              <div class="absolute-slot">
+                <div class="slot-time">08:00</div>
+                <div class="slot-place"><strong>공항/나고야 도착</strong><span>입국, 시내 이동 시작</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">09:30</div>
+                <div class="slot-place"><strong>나고야역</strong><span>코인락커/수하물 보관 후 이동</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">10:50</div>
+                <div class="slot-place"><strong>矢場とん</strong><span>나고야역/사카에 미소카츠</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">12:10</div>
+                <div class="slot-place"><strong>지브리파크 이동</strong><span>Fujigaoka, Linimo 경유</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">12:30</div>
+                <div class="slot-place"><strong>지브리파크 도착</strong><span>Linimo로 이동</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">13:00</div>
+                <div class="slot-place"><strong>Grand Warehouse</strong><span>전시, 사진, 굿즈 1차</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">14:40</div>
+                <div class="slot-place"><strong>Valley of Witches</strong><span>하울/마녀 배달부 키키 구역</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">15:50</div>
+                <div class="slot-place"><strong>Mononoke Village</strong><span>산책, 사진</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">16:30</div>
+                <div class="slot-place"><strong>지브리파크 출발</strong><span>나고야역으로 복귀</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">18:30</div>
+                <div class="slot-place"><strong>焼肉ジャック</strong><span>타베호다이/노미호다이 후보</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute-day">
+            <div class="absolute-head">
+              <strong>Day 2 공통</strong>
+              <span>나고야 시내</span>
+            </div>
+            <div class="absolute-slots">
+              <div class="absolute-slot">
+                <div class="slot-time">08:30</div>
+                <div class="slot-place"><strong>나고야 모닝</strong><span>커피+토스트로 시작</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">09:30</div>
+                <div class="slot-place"><strong>나고야성·혼마루</strong><span>성, 궁전, 정원 산책</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">11:40</div>
+                <div class="slot-place"><strong>Kinshachi Yokocho</strong><span>성 아래 상점가 구경</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">12:40</div>
+                <div class="slot-place"><strong>히츠마부시</strong><span>나고야역/사카에 장어덮밥</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">14:00</div>
+                <div class="slot-place"><strong>오스상점가·오스관음</strong><span>상점가, 절, 간식</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">16:30</div>
+                <div class="slot-place"><strong>반쇼지·카페</strong><span>오스 후반 쉬는 구간</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">17:30</div>
+                <div class="slot-place"><strong>미라이타워·히사야오도리</strong><span>해질녘 산책</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">18:30</div>
+                <div class="slot-place"><strong>사카에 초밥</strong><span>오아시스21 전후 저녁</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute-day full">
+            <div class="absolute-head">
+              <strong>Day 3 공통</strong>
+              <span>다카야마·시라카와고 투어</span>
+            </div>
+            <div class="absolute-slots">
+              <div class="absolute-slot">
+                <div class="slot-time">D3 07:30</div>
+                <div class="slot-place"><strong>나고야역 집합</strong><span>투어 버스 체크인</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D3 10:30</div>
+                <div class="slot-place"><strong>다카야마</strong><span>산마치스지, 미야가와 아침시장 주변</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D3 12:00</div>
+                <div class="slot-place"><strong>다카야마 점심</strong><span>히다규, 라멘, 고헤이모치</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D3 13:30</div>
+                <div class="slot-place"><strong>시라카와고 이동</strong><span>버스 이동</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D3 15:00</div>
+                <div class="slot-place"><strong>시라카와고</strong><span>전망대, 갓쇼즈쿠리 마을</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute-day plan-a">
+            <div class="absolute-head">
+              <strong>PLAN A</strong>
+              <span>투어 후 게로온천</span>
+            </div>
+            <div class="absolute-slots">
+              <div class="absolute-slot">
+                <div class="slot-time">D3 17:00</div>
+                <div class="slot-place"><strong>게로 이동</strong><span>투어 종료 지점에서 이동</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D3 19:00</div>
+                <div class="slot-place"><strong>게로온천 도착</strong><span>체크인, 온천, 늦은 저녁</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 08:00</div>
+                <div class="slot-place"><strong>게로 조식·온천</strong><span>아침 온천, 온천가 산책</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 11:00</div>
+                <div class="slot-place"><strong>게로 → 나고야</strong><span>나고야역 복귀</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 13:30</div>
+                <div class="slot-place"><strong>사이제리아</strong><span>나고야역 가벼운 점심</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 17:30</div>
+                <div class="slot-place"><strong>공항 이동</strong><span>20:00 NGO 출발</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute-day plan-b">
+            <div class="absolute-head">
+              <strong>PLAN B</strong>
+              <span>투어 후 나고야 복귀</span>
+            </div>
+            <div class="absolute-slots">
+              <div class="absolute-slot">
+                <div class="slot-time">D3 17:00</div>
+                <div class="slot-place"><strong>나고야 복귀 출발</strong><span>휴게소 포함</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D3 19:30</div>
+                <div class="slot-place"><strong>나고야역 도착</strong><span>역 주변 늦은 저녁</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 09:30</div>
+                <div class="slot-place"><strong>나고야 모닝</strong><span>천천히 시작</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 11:00</div>
+                <div class="slot-place"><strong>사카에/오스/나고야역</strong><span>못 본 곳 회수, 쇼핑</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 13:00</div>
+                <div class="slot-place"><strong>사이제리아</strong><span>나고야역 가벼운 점심</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 15:30</div>
+                <div class="slot-place"><strong>기념품·짐 정리</strong><span>나고야역 또는 공항</span></div>
+              </div>
+              <div class="absolute-slot">
+                <div class="slot-time">D4 17:30</div>
+                <div class="slot-place"><strong>공항 이동</strong><span>20:00 NGO 출발</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>끼니 계획</h2>
+      <div class="meal-grid">
+        <div class="meal-card">
+          <h3>Day 1</h3>
+          <div class="meal-row">
+            <div class="meal-type">아침</div>
+            <div class="meal-place"><strong>공항/이동 중</strong><span>도착 시간 따라 간단히</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">점심</div>
+            <div class="meal-place"><strong>矢場とん</strong><span>나고야역/사카에 미소카츠</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">저녁</div>
+            <div class="meal-place"><strong>焼肉ジャック</strong><span>나고야역 앞 야키니쿠</span></div>
+          </div>
+        </div>
+
+        <div class="meal-card">
+          <h3>Day 2</h3>
+          <div class="meal-row">
+            <div class="meal-type">아침</div>
+            <div class="meal-place"><strong>코메다 모닝</strong><span>커피+토스트</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">점심</div>
+            <div class="meal-place"><strong>히츠마부시</strong><span>나고야역/사카에 장어덮밥</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">저녁</div>
+            <div class="meal-place"><strong>사카에 초밥</strong><span>오아시스21 전후</span></div>
+          </div>
+        </div>
+
+        <div class="meal-card">
+          <h3>Day 3 투어</h3>
+          <div class="meal-row">
+            <div class="meal-type">아침</div>
+            <div class="meal-place"><strong>나고야역</strong><span>투어 집합 전 간단히</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">점심</div>
+            <div class="meal-place"><strong>다카야마</strong><span>히다규/라멘/고헤이모치</span></div>
+          </div>
+        </div>
+
+        <div class="meal-card">
+          <h3>PLAN A</h3>
+          <div class="meal-row">
+            <div class="meal-type">D3 저녁</div>
+            <div class="meal-place"><strong>게로온천</strong><span>숙소/온천가 늦은 저녁</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">D4 아침</div>
+            <div class="meal-place"><strong>게로 조식</strong><span>온천 후 체크아웃</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">D4 점심</div>
+            <div class="meal-place"><strong>사이제리아</strong><span>나고야역 가벼운 점심</span></div>
+          </div>
+        </div>
+
+        <div class="meal-card">
+          <h3>PLAN B</h3>
+          <div class="meal-row">
+            <div class="meal-type">D3 저녁</div>
+            <div class="meal-place"><strong>나고야역</strong><span>투어 복귀 후 늦은 저녁</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">D4 아침</div>
+            <div class="meal-place"><strong>나고야 모닝</strong><span>천천히 시작</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">D4 점심</div>
+            <div class="meal-place"><strong>사이제리아</strong><span>나고야역 가벼운 점심</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>공통 일정</h2>
+      <div class="choice-grid">
+        <div class="choice">
+          <div class="choice-head">
+            <h3>Day 1: 도착 → 지브리파크</h3>
+            <p class="summary">첫날은 이동 동선을 단순하게 두고 지브리파크에 집중합니다.</p>
+          </div>
+          <div class="choice-body">
+            <div class="badge-row">
+              <span class="badge">사전 예약 중요</span>
+              <span class="badge">짐은 나고야역에 보관</span>
+            </div>
+            <div class="legs">
+              <div class="leg">
+                <div>
+                  <strong>공항 → 나고야역 짐 보관</strong>
+                  <span><span class="clock">08:00~09:30</span>입국, 시내 이동, 코인락커/수하물 보관.</span>
+                </div>
+                <div class="time">약 30~60분</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>나고야역 → 矢場とん 점심</strong>
+                  <span><span class="clock">10:00~12:00</span>짐 보관 후 나고야역/사카에에서 미소카츠.</span>
+                </div>
+                <div class="time">이동+식사</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>후지가오카 → 지브리파크</strong>
+                  <span><span class="clock">12:10~12:40</span>Fujigaoka, Linimo 환승 후 공원 도착.</span>
+                </div>
+                <div class="time">약 25~30분</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>Grand Warehouse</strong>
+                  <span><span class="clock">13:00~14:30</span>전시, 사진, 굿즈 1차.</span>
+                </div>
+                <div class="time">약 1시간 30분</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>Valley of Witches / Mononoke Village</strong>
+                  <span><span class="clock">14:40~16:20</span>하울/키키 구역, 모노노케 산책, 사진 위주.</span>
+                </div>
+                <div class="time">약 1시간 40분</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>지브리파크 → 나고야</strong>
+                  <span><span class="clock">16:30~17:30</span>복귀 후 나고야역 앞 야키니쿠로 이동.</span>
+                </div>
+                <div class="time">약 50~60분</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="choice">
+          <div class="choice-head">
+            <h3>Day 2: 나고야성 → 오스 → 오아시스21</h3>
+            <p class="summary">시내권을 한 번에 묶는 날입니다. 성은 나고야성 또는 기요스성 중 하나만 선택합니다.</p>
+          </div>
+          <div class="choice-body">
+            <div class="badge-row">
+              <span class="badge easy">시내 이동 위주</span>
+              <span class="badge">저녁 야경 좋음</span>
+            </div>
+            <div class="legs">
+              <div class="leg">
+                <div>
+                  <strong>나고야 모닝 → 나고야성</strong>
+                  <span><span class="clock">08:30~11:30</span>아침 후 나고야성, 혼마루, 정원 산책.</span>
+                </div>
+                <div class="time">약 15~25분</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>Kinshachi Yokocho → 히츠마부시</strong>
+                  <span><span class="clock">11:40~13:40</span>성 아래 상점가 구경 후 장어덮밥 점심.</span>
+                </div>
+                <div class="time">약 20~30분</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>오스상점가·오스관음</strong>
+                  <span><span class="clock">14:00~16:20</span>상점가, 절, 간식, 쇼핑.</span>
+                </div>
+                <div class="time">약 2시간 20분</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>반쇼지·카페</strong>
+                  <span><span class="clock">16:30~17:20</span>오스 후반 쉬는 구간.</span>
+                </div>
+                <div class="time">약 50분</div>
+              </div>
+              <div class="leg">
+                <div>
+                  <strong>미라이타워·히사야오도리 → 오아시스21</strong>
+                  <span><span class="clock">17:30~19:30</span>해질녘 산책, 야경, 사카에 초밥.</span>
+                </div>
+                <div class="time">약 15~25분</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>식사 후보</h2>
+      <div class="panel">
+        <div class="food-list">
+          <div class="food-item primary">
+            <div>
+              <strong>Day 2 히츠마부시</strong>
+              <span>초밥 먹는 날 점심 후보. 나고야성 이후 나고야역/사카에에서 장어덮밥.</span>
+            </div>
+            <a class="map-link" href="https://www.houraiken.com/" target="_blank" rel="noreferrer">あつた蓬莱軒</a>
+          </div>
+          <div class="food-item">
+            <div>
+              <strong>麺家 半蔵</strong>
+              <span>Day 1 점심 대안. 미소카츠 대기 시간이 길거나 지브리파크 이동을 당기고 싶을 때 후지가오카 환승 지점에서 라멘/츠케멘.</span>
+            </div>
+            <a class="map-link" href="https://www.menya-hanzo.com/hanzo.html" target="_blank" rel="noreferrer">공식 안내</a>
+          </div>
+          <div class="food-item">
+            <div>
+              <strong>지브리파크 내부 점심</strong>
+              <span>티켓 시간이 11시로 고정되어 밖에서 먹기 어려울 때만 대안.</span>
+            </div>
+            <a class="map-link" href="https://ghibli-park.jp/en/food/" target="_blank" rel="noreferrer">공식 안내</a>
+          </div>
+          <div class="food-item primary">
+            <div>
+              <strong>焼肉食べ放題 焼肉ジャック 名古屋駅前店</strong>
+              <span>Day 1 저녁 우선 후보. 지브리파크에서 나고야 복귀 후 18:30~20:30에 맞추기 좋음.</span>
+            </div>
+            <a class="map-link" href="https://maps.app.goo.gl/cNBu6zHUHjRFpEcZ8?g_st=ic" target="_blank" rel="noreferrer">Google 지도</a>
+          </div>
+          <div class="food-item">
+            <div>
+              <strong>코메다 모닝</strong>
+              <span>Day 2 이후 아침 후보. 커피+토스트 계열로 일정 시작 전에 부담이 적음.</span>
+            </div>
+            <a class="map-link" href="https://www.komeda.co.jp/menu/morning/" target="_blank" rel="noreferrer">공식 메뉴</a>
+          </div>
+          <div class="food-item primary">
+            <div>
+              <strong>矢場とん</strong>
+              <span>Day 1 점심 후보. 나고야 도착 후 짐 보관하고 먹은 뒤 지브리파크로 이동.</span>
+            </div>
+            <a class="map-link" href="https://www.yabaton.com/" target="_blank" rel="noreferrer">공식 안내</a>
+          </div>
+          <div class="food-item primary">
+            <div>
+              <strong>Day 2 초밥 저녁</strong>
+              <span>사카에/오아시스21 전후 후보. 杉玉 栄, Nagoya Sakae Sushi Eika, ONODERA 중 예산에 맞춰 선택.</span>
+            </div>
+            <a class="map-link" href="https://s.tabelog.com/en/aichi/A2301/A230103/rstLst/sushi/" target="_blank" rel="noreferrer">Tabelog</a>
+          </div>
+          <div class="food-item">
+            <div>
+              <strong>오스상점가 간식</strong>
+              <span>Day 2 간식 후보. 점심은 히츠마부시, 저녁은 초밥으로 잡고 오스에서는 디저트/간식 위주.</span>
+            </div>
+            <a class="map-link" href="https://osu.nagoya/" target="_blank" rel="noreferrer">오스 안내</a>
+          </div>
+          <div class="food-item">
+            <div>
+              <strong>다카야마 점심</strong>
+              <span>Day 3 투어 점심 후보. 히다규, 다카야마 라멘, 고헤이모치.</span>
+            </div>
+            <a class="map-link" href="https://www.hida.jp/english/" target="_blank" rel="noreferrer">다카야마 안내</a>
+          </div>
+          <div class="food-item">
+            <div>
+              <strong>게로온천 저녁/조식</strong>
+              <span>PLAN A 후보. 투어 후 늦게 도착하므로 숙소 식사 가능 여부를 먼저 확인.</span>
+            </div>
+            <a class="map-link" href="https://www.gero-spa.com/" target="_blank" rel="noreferrer">게로 안내</a>
+          </div>
+          <div class="food-item">
+            <div>
+              <strong>사이제리아</strong>
+              <span>Day 4 점심 후보. 마지막날 시간이 애매하면 나고야역 주변에서 가볍게 먹기.</span>
+            </div>
+            <a class="map-link" href="https://www.saizeriya.co.jp/" target="_blank" rel="noreferrer">공식 안내</a>
+          </div>
+          <div class="food-item">
+            <div>
+              <strong>타베호다이 + 노미호다이 야키니쿠</strong>
+              <span>비교 후보. 첫날 동선과 예약 시간이 맞지 않을 때 대안으로 확인.</span>
+            </div>
+            <a class="map-link" href="https://share.google/bpvHfAL7FjBqCCQYj" target="_blank" rel="noreferrer">Google 지도</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Day 3~4 선택지</h2>
+      <div class="day-detail">
+        <h4>Day 3 공통 / 다카야마·시라카와고 종일투어</h4>
+        <ol>
+          <li><span class="clock">07:30~08:00</span>나고야역 집합. 투어 버스 체크인.</li>
+          <li><span class="clock">10:30~12:50</span>다카야마. 산마치스지, 미야가와 아침시장 주변, 점심.</li>
+          <li><span class="clock">13:30~14:50</span>시라카와고 이동. 버스 안에서 휴식.</li>
+          <li><span class="clock">15:00~16:50</span>시라카와고. 전망대, 갓쇼즈쿠리 마을, 간식.</li>
+        </ol>
+      </div>
+      <table class="compare-table" aria-label="PLAN A와 PLAN B 시간대별 비교">
+        <thead>
+          <tr>
+            <th>시간</th>
+            <th class="plan-a-cell">PLAN A: 투어 후 게로온천</th>
+            <th class="plan-b-cell">PLAN B: 투어 후 나고야 복귀</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="compare-time">D3 17:00</td>
+            <td class="plan-a-cell"><strong>게로 이동</strong><span>투어 종료 지점에서 게로온천으로 이동.</span></td>
+            <td class="plan-b-cell"><strong>나고야 복귀</strong><span>투어 버스로 나고야역 복귀. 휴게소 포함.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">D3 19:00</td>
+            <td class="plan-a-cell"><strong>게로온천 체크인</strong><span>온천, 숙소 또는 온천가 늦은 저녁.</span></td>
+            <td class="plan-b-cell"><strong>나고야역 도착</strong><span>19:30 전후 도착 예상. 역 주변 늦은 저녁.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">D4 08:00</td>
+            <td class="plan-a-cell"><strong>게로 조식·온천</strong><span>조식, 아침 온천, 온천가 산책.</span></td>
+            <td class="plan-b-cell"><strong>나고야 숙소</strong><span>이 시간대는 숙소에서 천천히 시작.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">D4 09:30</td>
+            <td class="plan-a-cell"><strong>게로 체크아웃 준비</strong><span>짐 정리, 역 이동 준비.</span></td>
+            <td class="plan-b-cell"><strong>나고야 모닝</strong><span>커피+토스트로 아침.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">D4 11:00</td>
+            <td class="plan-a-cell"><strong>게로 → 나고야</strong><span>나고야역 복귀. 약 2시간.</span></td>
+            <td class="plan-b-cell"><strong>사카에/오스/나고야역</strong><span>못 본 곳 회수, 쇼핑.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">D4 13:00</td>
+            <td class="plan-a-cell"><strong>나고야역 도착</strong><span>13:00 전후 복귀 후 점심으로 이동.</span></td>
+            <td class="plan-b-cell"><strong>사이제리아</strong><span>나고야역 주변에서 가볍게 점심.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">D4 13:30</td>
+            <td class="plan-a-cell"><strong>사이제리아</strong><span>나고야역 주변에서 가볍게 점심.</span></td>
+            <td class="plan-b-cell"><strong>기념품 쇼핑</strong><span>짐 정리 전 역 주변 쇼핑.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">D4 15:00</td>
+            <td class="plan-a-cell"><strong>기념품·짐 정리</strong><span>나고야역 또는 공항으로 이동 전 정리.</span></td>
+            <td class="plan-b-cell"><strong>기념품·짐 정리</strong><span>나고야역 또는 공항으로 이동 전 정리.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">D4 17:30</td>
+            <td class="plan-a-cell"><strong>공항 이동</strong><span>20:00 NGO 출발.</span></td>
+            <td class="plan-b-cell"><strong>공항 이동</strong><span>20:00 NGO 출발.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>판단표</h2>
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>기준</th>
+            <th>PLAN A: 투어 후 게로온천</th>
+            <th>PLAN B: 투어 후 나고야 복귀</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>숙박</td>
+            <td>나고야 2박 + 게로 1박.</td>
+            <td>나고야 3박 고정.</td>
+          </tr>
+          <tr>
+            <td>이동 피로</td>
+            <td>높음. 투어 후 숙소 이동이 한 번 더 있음.</td>
+            <td>중간. 투어 버스로 나고야까지 복귀하면 끝.</td>
+          </tr>
+          <tr>
+            <td>가장 잘 사는 일정</td>
+            <td>투어 뒤 온천 숙박, Day 4 아침 온천.</td>
+            <td>짐 이동 없음, Day 4 나고야 여유.</td>
+          </tr>
+          <tr>
+            <td>다카야마/시라카와고</td>
+            <td>공통으로 감. 이후 게로로 이동.</td>
+            <td>공통으로 감. 이후 나고야로 복귀.</td>
+          </tr>
+          <tr>
+            <td>추천 대상</td>
+            <td>하루를 빡세게 써도 온천 1박을 넣고 싶은 경우.</td>
+            <td>투어 후 바로 쉬고 마지막 날을 여유 있게 쓰고 싶은 경우.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section recommend">
+      <div class="panel">
+        <h3>일정 메모</h3>
+        <p>
+          Day 3 낮에는 다카야마/시라카와고 종일투어를 갑니다.
+          PLAN A는 투어 후 게로온천으로 이동하고, PLAN B는 나고야로 복귀합니다.
+        </p>
+      </div>
+      <div class="panel">
+        <h3>확정 전 체크</h3>
+        <ul>
+          <li>투어 예약 시: 게로 이동 가능한 하차/해산 지점인지 확인</li>
+          <li>PLAN A 선택 시: 게로 숙소 체크인 가능 시간과 늦은 저녁 여부</li>
+          <li>PLAN B 선택 시: 나고야역 복귀 예상 시간과 늦은 저녁 후보</li>
+          <li>지브리파크 티켓 날짜와 입장권 종류</li>
+          <li>귀국편: 20:00 NGO 출발, 22:15 ICN 도착</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Nagoya 2026 draft. 이동 시간은 일반적인 철도/버스 기준의 계획용 추정치입니다.
+  </div>
+</body>
+</html>
