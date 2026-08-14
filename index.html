@@ -162,6 +162,13 @@
       margin-bottom: 16px;
     }
 
+    .day3-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      grid-column: 1 / -1;
+    }
+
     .absolute-day {
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -554,6 +561,7 @@
       .time { text-align: left; }
       .route-board { padding: 12px; }
       .absolute-days { grid-template-columns: 1fr; }
+      .day3-options { grid-template-columns: 1fr; }
       .meal-grid { grid-template-columns: 1fr; }
 
       .matrix {
@@ -573,23 +581,23 @@
   <div class="page-hero">
     <div class="wrap">
       <h1>나고야 3박4일 동선 초안</h1>
-      <p class="subtitle">Day 1 지브리파크·야키니쿠·Midland Square · Day 2 이누야마·오아시스21·Sky-Boat · Day 3 다카야마·시라카와고 · Day 4 나고야성·린쿠</p>
+      <p class="subtitle">Day 1 지브리파크·야키니쿠·Midland Square · Day 2 이누야마·오아시스21·Sky-Boat · Day 3 다카야마·시라카와고 또는 렌트카 게로 · Day 4 나고야성·린쿠</p>
       <div class="hero-grid" aria-label="기본 조건">
         <div class="hero-card">
-          <strong>첫날</strong>
-          <span>Day 1 지브리파크, 저녁 후 나고야역 야경</span>
+          <strong>Day 1</strong>
+          <span>09:30 NGO 도착, 지브리파크, 저녁 후 나고야역 야경</span>
         </div>
         <div class="hero-card">
-          <strong>둘째날</strong>
-          <span>Day 2 이누야마 성하마을, 오아시스21, Sky-Boat</span>
+          <strong>Day 2</strong>
+          <span>이누야마 성하마을, 오아시스21, Sky-Boat</span>
         </div>
         <div class="hero-card">
-          <strong>도착/출발</strong>
-          <span>1일차 09:30 NGO 도착, 4일차 20:00 NGO 출발</span>
+          <strong>Day 3</strong>
+          <span>A는 투어, B는 렌트카로 다카야마·게로</span>
         </div>
         <div class="hero-card">
-          <strong>마지막날</strong>
-          <span>Day 4 나고야성 후 린쿠 비치와 공항</span>
+          <strong>Day 4</strong>
+          <span>나고야성, 린쿠 비치, 20:00 NGO 출발</span>
         </div>
       </div>
     </div>
@@ -710,43 +718,94 @@
             </div>
           </div>
 
-          <div class="absolute-day full">
-            <div class="absolute-head">
-              <strong>Day 3 다카야마·시라카와고</strong>
-              <span>종일투어 후 초밥, 대욕장</span>
+          <div class="day3-options">
+            <div class="absolute-day plan-a">
+              <div class="absolute-head">
+                <strong>Day 3 Plan A</strong>
+                <span>다카야마·시라카와고 투어</span>
+              </div>
+              <div class="absolute-slots">
+                <div class="absolute-slot">
+                  <div class="slot-time">07:30</div>
+                  <div class="slot-place"><strong>나고야역 집합</strong><span>투어 버스 체크인</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">08:00</div>
+                  <div class="slot-place"><strong>나고야 출발</strong><span>버스로 다카야마 이동</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">10:30</div>
+                  <div class="slot-place"><strong>다카야마</strong><span>산마치스지, 미야가와 아침시장 주변</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">12:00</div>
+                  <div class="slot-place"><strong>다카야마 히다규 점심</strong><span>히다규 정식/고기초밥</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">13:30</div>
+                  <div class="slot-place"><strong>시라카와고 이동</strong><span>버스 이동</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">15:00</div>
+                  <div class="slot-place"><strong>시라카와고</strong><span>전망대, 갓쇼즈쿠리 마을</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">17:00</div>
+                  <div class="slot-place"><strong>나고야 복귀 출발</strong><span>휴게소 포함</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">19:30</div>
+                  <div class="slot-place"><strong>廣寿司 JR名古屋駅店</strong><span>투어 복귀 후 초밥</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">21:10</div>
+                  <div class="slot-place"><strong>天然温泉アーバンクア</strong><span>대욕장, 사우나, 휴식</span></div>
+                </div>
+              </div>
             </div>
-            <div class="absolute-slots">
-              <div class="absolute-slot">
-                <div class="slot-time">D3 07:30</div>
-                <div class="slot-place"><strong>나고야역 집합</strong><span>투어 버스 체크인</span></div>
+
+            <div class="absolute-day plan-b">
+              <div class="absolute-head">
+                <strong>Day 3 Plan B</strong>
+                <span>렌트카 다카야마·게로</span>
               </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D3 10:30</div>
-                <div class="slot-place"><strong>다카야마</strong><span>산마치스지, 미야가와 아침시장 주변</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D3 12:00</div>
-                <div class="slot-place"><strong>다카야마 히다규 점심</strong><span>히다규 정식/고기초밥</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D3 13:30</div>
-                <div class="slot-place"><strong>시라카와고 이동</strong><span>버스 이동</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D3 15:00</div>
-                <div class="slot-place"><strong>시라카와고</strong><span>전망대, 갓쇼즈쿠리 마을</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D3 17:00</div>
-                <div class="slot-place"><strong>나고야 복귀 출발</strong><span>휴게소 포함</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D3 19:30</div>
-                <div class="slot-place"><strong>廣寿司 JR名古屋駅店</strong><span>투어 복귀 후 초밥</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D3 21:10</div>
-                <div class="slot-place"><strong>天然温泉アーバンクア</strong><span>대욕장, 사우나, 휴식</span></div>
+              <div class="absolute-slots">
+                <div class="absolute-slot">
+                  <div class="slot-time">07:30</div>
+                  <div class="slot-place"><strong>렌트카 픽업</strong><span>나고야역 주변 영업소</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">08:00</div>
+                  <div class="slot-place"><strong>나고야 출발</strong><span>도카이호쿠리쿠/도카이칸조 경유</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">10:45</div>
+                  <div class="slot-place"><strong>다카야마</strong><span>산마치스지, 미야가와 아침시장 주변</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">12:00</div>
+                  <div class="slot-place"><strong>다카야마 히다규 점심</strong><span>히다규 정식/고기초밥</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">13:40</div>
+                  <div class="slot-place"><strong>다카야마 출발</strong><span>게로 온천마을로 이동</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">14:50</div>
+                  <div class="slot-place"><strong>게로 온천마을</strong><span>온천가 산책, 족탕, 당일탕</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">17:40</div>
+                  <div class="slot-place"><strong>게로 출발</strong><span>나고야까지 약 2시간 20분</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">20:10</div>
+                  <div class="slot-place"><strong>렌트카 반납</strong><span>나고야역 주변</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">20:40</div>
+                  <div class="slot-place"><strong>廣寿司 JR名古屋駅店</strong><span>반납 후 늦은 초밥 저녁</span></div>
+                </div>
               </div>
             </div>
           </div>
@@ -954,18 +1013,22 @@
         </div>
 
         <div class="meal-card">
-          <h3>Day 3 다카야마·시라카와고</h3>
+          <h3>Day 3</h3>
           <div class="meal-row">
             <div class="meal-type">아침</div>
-            <div class="meal-place"><strong>나고야역</strong><span>투어 집합 전 간단히</span></div>
+            <div class="meal-place"><strong>나고야역</strong><span>투어 집합 또는 렌트카 픽업 전 간단히</span></div>
           </div>
           <div class="meal-row">
             <div class="meal-type">점심</div>
             <div class="meal-place"><strong>다카야마 히다규</strong><span>히다규 정식/고기초밥</span></div>
           </div>
           <div class="meal-row">
-            <div class="meal-type">저녁</div>
+            <div class="meal-type">A 저녁</div>
             <div class="meal-place"><strong>廣寿司 JR名古屋駅店</strong><span>투어 복귀 후 나고야역 초밥</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-type">B 저녁</div>
+            <div class="meal-place"><strong>廣寿司 JR名古屋駅店</strong><span>렌트카 반납 후 늦은 초밥</span></div>
           </div>
         </div>
 
@@ -984,7 +1047,7 @@
     </div>
 
     <div class="section">
-      <h2>식사 후보</h2>
+      <h2>식사</h2>
       <div class="panel">
         <div class="food-list">
           <div class="food-item primary">
@@ -1081,15 +1144,22 @@
           </div>
           <div class="food-item">
             <div>
+              <strong>게로 온천마을 간식</strong>
+              <span>Day 3 Plan B 오후. 족탕과 함께 온천 푸딩/소프트크림.</span>
+            </div>
+            <a class="map-link" href="https://visitgifu.com/see-do/gero-onsen-sweets/" target="_blank" rel="noreferrer">기후 안내</a>
+          </div>
+          <div class="food-item">
+            <div>
               <strong>飛騨牛一頭家 馬喰一代 名古屋WEST</strong>
-              <span>Day 3 저녁 검토 식당. 나고야역 서쪽의 히다규 식당.</span>
+              <span>Day 3 저녁 선택지. 나고야역 서쪽의 히다규 식당.</span>
             </div>
             <a class="map-link" href="https://bakuroichidai.jp/shop/nagoyawest" target="_blank" rel="noreferrer">공식 안내</a>
           </div>
           <div class="food-item">
             <div>
               <strong>츠키시마몬자 쿠우야 히사야오도리파크</strong>
-              <span>Day 3 저녁 검토 식당. 히사야오도리파크의 몬자야키.</span>
+              <span>Day 3 저녁 선택지. 히사야오도리파크의 몬자야키.</span>
             </div>
             <a class="map-link" href="https://share.google/m7tyloaPvvRqrnHWf" target="_blank" rel="noreferrer">Google 지도</a>
           </div>
@@ -1110,7 +1180,7 @@
           <div class="food-item">
             <div>
               <strong>타베호다이 + 노미호다이 야키니쿠</strong>
-              <span>Day 1 저녁 검토 식당. 타베호다이/노미호다이 야키니쿠.</span>
+              <span>Day 1 저녁 선택지. 타베호다이/노미호다이 야키니쿠.</span>
             </div>
             <a class="map-link" href="https://share.google/bpvHfAL7FjBqCCQYj" target="_blank" rel="noreferrer">Google 지도</a>
           </div>
@@ -1119,18 +1189,48 @@
     </div>
 
     <div class="section">
-      <h2>Day 3 다카야마·시라카와고 / Day 4 나고야성·린쿠</h2>
-      <div class="day-detail">
-        <h4>Day 3 다카야마·시라카와고 종일투어</h4>
-        <ol>
-          <li><span class="clock">07:30~08:00</span>나고야역 집합. 투어 버스 체크인.</li>
-          <li><span class="clock">10:30~12:50</span>다카야마. 산마치스지, 미야가와 아침시장 주변, 히다규 점심.</li>
-          <li><span class="clock">13:30~14:50</span>시라카와고 이동. 버스 안에서 휴식.</li>
-          <li><span class="clock">15:00~16:50</span>시라카와고. 전망대, 갓쇼즈쿠리 마을, 간식.</li>
-          <li><span class="clock">19:30</span>나고야역 복귀 후 초밥 저녁.</li>
-          <li><span class="clock">21:10~23:00</span>天然温泉アーバンクア. 대욕장과 사우나로 마무리.</li>
-        </ol>
-      </div>
+      <h2>Day 3 선택지 / Day 4 나고야성·린쿠</h2>
+      <table class="compare-table" aria-label="Day 3 Plan A와 Plan B 비교">
+        <thead>
+          <tr>
+            <th>시간</th>
+            <th>Plan A: 다카야마·시라카와고 투어</th>
+            <th>Plan B: 렌트카 다카야마·게로</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="compare-time">07:30</td>
+            <td class="plan-a-cell"><strong>나고야역 집합</strong><span>투어 버스 체크인.</span></td>
+            <td class="plan-b-cell"><strong>렌트카 픽업</strong><span>나고야역 주변 영업소.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">08:00</td>
+            <td class="plan-a-cell"><strong>나고야 출발</strong><span>투어 버스로 다카야마 이동.</span></td>
+            <td class="plan-b-cell"><strong>나고야 출발</strong><span>고속도로 중심으로 다카야마 이동.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">10:30~12:50</td>
+            <td class="plan-a-cell"><strong>다카야마</strong><span>산마치스지, 미야가와 아침시장 주변, 히다규 점심.</span></td>
+            <td class="plan-b-cell"><strong>다카야마</strong><span>10:45 전후 도착, 산마치스지와 히다규 점심.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">13:30~16:50</td>
+            <td class="plan-a-cell"><strong>시라카와고</strong><span>13:30 이동, 15:00 전후 도착, 전망대와 갓쇼즈쿠리 마을.</span></td>
+            <td class="plan-b-cell"><strong>게로 온천마을</strong><span>13:40 다카야마 출발, 14:50 전후 도착, 온천가 산책과 당일탕.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">17:00~20:10</td>
+            <td class="plan-a-cell"><strong>나고야 복귀</strong><span>17:00 투어 복귀 출발, 19:30 전후 나고야역.</span></td>
+            <td class="plan-b-cell"><strong>게로 출발·반납</strong><span>17:40 출발, 20:10 전후 나고야역 주변 반납.</span></td>
+          </tr>
+          <tr>
+            <td class="compare-time">20:40 이후</td>
+            <td class="plan-a-cell"><strong>廣寿司 · アーバンクア</strong><span>초밥 저녁 후 21:10 전후 대욕장.</span></td>
+            <td class="plan-b-cell"><strong>廣寿司</strong><span>렌트카 반납 후 늦은 초밥. 게로에서 씻고 오면 대욕장은 제외.</span></td>
+          </tr>
+        </tbody>
+      </table>
       <div class="day-detail">
         <h4>Day 4 나고야성·린쿠 비치</h4>
         <ol>
@@ -1178,8 +1278,8 @@
           </tr>
           <tr>
             <td class="compare-time">Day 3 밤</td>
-            <td><strong>天然温泉アーバンクア</strong><span>투어 복귀와 초밥 저녁 후 대욕장.</span></td>
-            <td>다카야마·시라카와고 종일투어 후 회복 구간.</td>
+            <td><strong>Plan A: アーバンクア / Plan B: 게로 온천마을</strong><span>A는 투어 복귀 후 대욕장, B는 게로에서 당일탕.</span></td>
+            <td>Plan B는 시라카와고를 빼야 시간이 맞고, 초밥은 나고야역 늦은 저녁으로 연결.</td>
           </tr>
           <tr>
             <td class="compare-time">Day 4 오전</td>
@@ -1200,7 +1300,7 @@
         <h3>일정 요약</h3>
         <p>
           Day 2 오전에는 이누야마 성하마을을 다녀오고, 나고야로 돌아와 히츠마부시 점심을 먹습니다.
-          Day 3 밤에는 초밥 저녁 후 대욕장에서 쉬어갑니다.
+          Day 3는 다카야마·시라카와고 투어 또는 렌트카 다카야마·게로 중 하나로 잡습니다.
           Day 4는 나고야성 후 린쿠 비치를 거쳐 공항으로 이동합니다.
         </p>
       </div>
@@ -1208,7 +1308,8 @@
         <h3>예약 확인</h3>
         <ul>
           <li>투어 예약 시: 나고야역 복귀 예상 시간과 집합/해산 지점 확인</li>
-          <li>Day 3 저녁: 나고야역 복귀 시간, 초밥집 영업 시간, 아ーバンクア 입장 시간 확인</li>
+          <li>Day 3 Plan B 선택 시: 렌트카 영업시간, 고속도로 통행료, 주차장, 게로 당일탕 접수 시간 확인</li>
+          <li>Day 3 저녁: 나고야역 복귀 시간, 초밥집 영업 시간, Plan A의 아ーバンクア 입장 시간 확인</li>
           <li>Day 2 이누야마 이동 시: 메이테츠 시간표와 히츠마부시 점심 시간 확인</li>
           <li>Day 1 Midland Square 이동 시: 최종 입장 시간과 야키니쿠 종료 시간 확인</li>
           <li>Day 2 Sky-Boat 이동 시: 최종 탑승 시간과 저녁 식당 이동 시간 확인</li>
