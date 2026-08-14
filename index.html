@@ -162,7 +162,7 @@
       margin-bottom: 16px;
     }
 
-    .day3-options {
+    .option-days {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
@@ -561,7 +561,7 @@
       .time { text-align: left; }
       .route-board { padding: 12px; }
       .absolute-days { grid-template-columns: 1fr; }
-      .day3-options { grid-template-columns: 1fr; }
+      .option-days { grid-template-columns: 1fr; }
       .meal-grid { grid-template-columns: 1fr; }
 
       .matrix {
@@ -581,7 +581,7 @@
   <div class="page-hero">
     <div class="wrap">
       <h1>나고야 3박4일 동선 초안</h1>
-      <p class="subtitle">Day 1 지브리파크·야키니쿠·Midland Square · Day 2 이누야마·오아시스21·Sky-Boat · Day 3 다카야마·시라카와고 또는 렌트카 게로 · Day 4 나고야성·린쿠</p>
+      <p class="subtitle">Day 1 지브리파크·야키니쿠·Midland Square · Day 2 이누야마·오아시스21·Sky-Boat · Day 3 다카야마·시라카와고 또는 렌트카 게로 숙박 · Day 4 나고야성·린쿠</p>
       <div class="hero-grid" aria-label="기본 조건">
         <div class="hero-card">
           <strong>Day 1</strong>
@@ -593,7 +593,7 @@
         </div>
         <div class="hero-card">
           <strong>Day 3</strong>
-          <span>A는 투어, B는 렌트카로 다카야마·게로</span>
+          <span>A는 투어, B는 렌트카로 다카야마·게로 숙박</span>
         </div>
         <div class="hero-card">
           <strong>Day 4</strong>
@@ -718,7 +718,7 @@
             </div>
           </div>
 
-          <div class="day3-options">
+          <div class="option-days">
             <div class="absolute-day plan-a">
               <div class="absolute-head">
                 <strong>Day 3 Plan A</strong>
@@ -767,7 +767,7 @@
             <div class="absolute-day plan-b">
               <div class="absolute-head">
                 <strong>Day 3 Plan B</strong>
-                <span>렌트카 다카야마·게로</span>
+                <span>렌트카 다카야마·게로 숙박</span>
               </div>
               <div class="absolute-slots">
                 <div class="absolute-slot">
@@ -792,57 +792,96 @@
                 </div>
                 <div class="absolute-slot">
                   <div class="slot-time">14:50</div>
-                  <div class="slot-place"><strong>게로 온천마을</strong><span>온천가 산책, 족탕, 당일탕</span></div>
+                  <div class="slot-place"><strong>게로 온천마을</strong><span>온천가 산책, 족탕, 간식</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">17:30</div>
+                  <div class="slot-place"><strong>게로 숙소 체크인</strong><span>온천 숙소, 휴식</span></div>
                 </div>
                 <div class="absolute-slot">
                   <div class="slot-time">18:30</div>
-                  <div class="slot-place"><strong>게로 출발</strong><span>나고야까지 약 2시간 20분</span></div>
+                  <div class="slot-place"><strong>게로 저녁</strong><span>숙소 식사 또는 온천가 식당</span></div>
                 </div>
                 <div class="absolute-slot">
-                  <div class="slot-time">21:00</div>
-                  <div class="slot-place"><strong>나고야 도착</strong><span>렌트카는 다음날 아침 반납</span></div>
-                </div>
-                <div class="absolute-slot">
-                  <div class="slot-time">21:20</div>
-                  <div class="slot-place"><strong>테바사키 / 야키토리</strong><span>도착 후 가벼운 안주형 저녁</span></div>
+                  <div class="slot-time">20:30</div>
+                  <div class="slot-place"><strong>온천·휴식</strong><span>게로 숙박</span></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="absolute-day full">
-            <div class="absolute-head">
-              <strong>Day 4</strong>
-              <span>나고야성 → 린쿠 비치 → 공항</span>
+          <div class="option-days">
+            <div class="absolute-day plan-a">
+              <div class="absolute-head">
+                <strong>Day 4 Plan A</strong>
+                <span>나고야성 → 린쿠 → 공항</span>
+              </div>
+              <div class="absolute-slots">
+                <div class="absolute-slot">
+                  <div class="slot-time">08:30</div>
+                  <div class="slot-place"><strong>체크아웃 · 짐 보관</strong><span>나고야역 코인락커/수하물 보관</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">09:30</div>
+                  <div class="slot-place"><strong>나고야성·혼마루</strong><span>성, 궁전, 정원 산책</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">11:40</div>
+                  <div class="slot-place"><strong>Kinshachi Yokocho</strong><span>성 아래 상점가 구경</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">13:00</div>
+                  <div class="slot-place"><strong>사이제리아</strong><span>나고야역 주변 점심</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">14:30</div>
+                  <div class="slot-place"><strong>공항 방향 이동</strong><span>짐 회수 후 도코나메/중부국제공항 방향</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">15:30</div>
+                  <div class="slot-place"><strong>린쿠 비치</strong><span>도코나메 해변 산책</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">17:30</div>
+                  <div class="slot-place"><strong>공항</strong><span>20:00 NGO 출발</span></div>
+                </div>
+              </div>
             </div>
-            <div class="absolute-slots">
-              <div class="absolute-slot">
-                <div class="slot-time">D4 08:30</div>
-                <div class="slot-place"><strong>체크아웃 · 짐 보관</strong><span>Plan B면 렌트카 반납 후 나고야역 짐 보관</span></div>
+
+            <div class="absolute-day plan-b">
+              <div class="absolute-head">
+                <strong>Day 4 Plan B</strong>
+                <span>게로 → 나고야 → 공항</span>
               </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D4 09:30</div>
-                <div class="slot-place"><strong>나고야성·혼마루</strong><span>성, 궁전, 정원 산책</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D4 11:40</div>
-                <div class="slot-place"><strong>Kinshachi Yokocho</strong><span>성 아래 상점가 구경</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D4 13:00</div>
-                <div class="slot-place"><strong>사이제리아</strong><span>나고야역 주변 점심</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D4 14:30</div>
-                <div class="slot-place"><strong>공항 방향 이동</strong><span>짐 회수 후 도코나메/중부국제공항 방향</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D4 15:30</div>
-                <div class="slot-place"><strong>린쿠 비치</strong><span>도코나메 해변 산책</span></div>
-              </div>
-              <div class="absolute-slot">
-                <div class="slot-time">D4 17:30</div>
-                <div class="slot-place"><strong>공항</strong><span>20:00 NGO 출발</span></div>
+              <div class="absolute-slots">
+                <div class="absolute-slot">
+                  <div class="slot-time">08:00</div>
+                  <div class="slot-place"><strong>게로 숙소 조식</strong><span>온천 후 체크아웃 준비</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">09:30</div>
+                  <div class="slot-place"><strong>게로 출발</strong><span>렌트카로 나고야 이동</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">12:00</div>
+                  <div class="slot-place"><strong>나고야 도착·렌트카 반납</strong><span>짐은 나고야역 보관</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">12:40</div>
+                  <div class="slot-place"><strong>나고야성·Kinshachi Yokocho</strong><span>짧게 보고 점심 연결</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">14:40</div>
+                  <div class="slot-place"><strong>공항 방향 이동</strong><span>짐 회수 후 도코나메/중부국제공항 방향</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">15:40</div>
+                  <div class="slot-place"><strong>린쿠 비치</strong><span>가능하면 짧게 산책</span></div>
+                </div>
+                <div class="absolute-slot">
+                  <div class="slot-time">17:30</div>
+                  <div class="slot-place"><strong>공항</strong><span>20:00 NGO 출발</span></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1032,7 +1071,7 @@
           </div>
           <div class="meal-row">
             <div class="meal-type">B 저녁</div>
-            <div class="meal-place"><strong>테바사키 / 야키토리</strong><span>게로에서 돌아온 뒤 가벼운 안주형 저녁</span></div>
+            <div class="meal-place"><strong>게로 숙소 저녁</strong><span>숙소 식사 또는 온천가 식당</span></div>
           </div>
         </div>
 
@@ -1040,11 +1079,11 @@
           <h3>Day 4</h3>
           <div class="meal-row">
             <div class="meal-type">D4 아침</div>
-            <div class="meal-place"><strong>나고야역</strong><span>체크아웃 전후 가볍게</span></div>
+            <div class="meal-place"><strong>A: 나고야역 / B: 게로 숙소</strong><span>Plan B는 숙소 조식 후 나고야 복귀</span></div>
           </div>
           <div class="meal-row">
             <div class="meal-type">D4 점심</div>
-            <div class="meal-place"><strong>사이제리아</strong><span>나고야역 가벼운 점심</span></div>
+            <div class="meal-place"><strong>A: 사이제리아 / B: Kinshachi Yokocho</strong><span>Plan B는 나고야성 주변에서 짧게 식사</span></div>
           </div>
         </div>
       </div>
@@ -1156,14 +1195,14 @@
           <div class="food-item">
             <div>
               <strong>飛騨牛一頭家 馬喰一代 名古屋WEST</strong>
-              <span>Day 3 저녁 선택지. 나고야역 서쪽의 히다규 식당.</span>
+              <span>Plan A 저녁 대체. 나고야역 서쪽의 히다규 식당.</span>
             </div>
             <a class="map-link" href="https://bakuroichidai.jp/shop/nagoyawest" target="_blank" rel="noreferrer">공식 안내</a>
           </div>
           <div class="food-item">
             <div>
               <strong>츠키시마몬자 쿠우야 히사야오도리파크</strong>
-              <span>Day 3 저녁 선택지. 히사야오도리파크의 몬자야키.</span>
+              <span>Day 2 또는 Plan A 저녁 대체. 히사야오도리파크의 몬자야키.</span>
             </div>
             <a class="map-link" href="https://share.google/m7tyloaPvvRqrnHWf" target="_blank" rel="noreferrer">Google 지도</a>
           </div>
@@ -1199,7 +1238,7 @@
           <tr>
             <th>시간</th>
             <th>Plan A: 다카야마·시라카와고 투어</th>
-            <th>Plan B: 렌트카 다카야마·게로</th>
+            <th>Plan B: 렌트카 다카야마·게로 숙박</th>
           </tr>
         </thead>
         <tbody>
@@ -1221,34 +1260,33 @@
           <tr>
             <td class="compare-time">13:30~16:50</td>
             <td class="plan-a-cell"><strong>시라카와고</strong><span>13:30 이동, 15:00 전후 도착, 전망대와 갓쇼즈쿠리 마을.</span></td>
-            <td class="plan-b-cell"><strong>게로 온천마을</strong><span>13:40 다카야마 출발, 14:50 전후 도착, 온천가 산책과 당일탕.</span></td>
+            <td class="plan-b-cell"><strong>게로 온천마을</strong><span>13:40 다카야마 출발, 14:50 전후 도착, 온천가 산책과 숙소 체크인.</span></td>
           </tr>
           <tr>
-            <td class="compare-time">17:00~21:00</td>
+            <td class="compare-time">17:00~20:30</td>
             <td class="plan-a-cell"><strong>나고야 복귀</strong><span>17:00 투어 복귀 출발, 19:30 전후 나고야역.</span></td>
-            <td class="plan-b-cell"><strong>게로 출발·나고야 도착</strong><span>18:30 출발, 21:00 전후 나고야 도착. 반납은 Day 4 아침.</span></td>
+            <td class="plan-b-cell"><strong>게로 숙박</strong><span>18:30 저녁, 온천 후 게로에서 1박.</span></td>
           </tr>
           <tr>
             <td class="compare-time">21:20 이후</td>
             <td class="plan-a-cell"><strong>廣寿司 · アーバンクア</strong><span>초밥 저녁 후 21:10 전후 대욕장.</span></td>
-            <td class="plan-b-cell"><strong>테바사키 / 야키토리</strong><span>초밥은 Day 2 저녁으로 이동. 렌트카는 야간 주차 후 다음날 반납.</span></td>
+            <td class="plan-b-cell"><strong>게로 숙소</strong><span>초밥은 Day 2 저녁으로 이동. Day 3 밤은 게로 숙박.</span></td>
           </tr>
           <tr>
-            <td class="compare-time">Day 4 08:30</td>
+            <td class="compare-time">Day 4 오전</td>
             <td class="plan-a-cell"><strong>체크아웃·짐 보관</strong><span>나고야역 코인락커/수하물 보관.</span></td>
-            <td class="plan-b-cell"><strong>렌트카 반납·짐 보관</strong><span>반납 후 나고야역 짐 보관, 이후 나고야성 이동.</span></td>
+            <td class="plan-b-cell"><strong>게로 출발·렌트카 반납</strong><span>09:30 게로 출발, 12:00 전후 나고야 도착과 반납.</span></td>
           </tr>
         </tbody>
       </table>
       <div class="day-detail">
         <h4>Day 4 나고야성·린쿠 비치</h4>
         <ol>
-          <li><span class="clock">08:30~09:20</span>체크아웃, 나고야역 짐 보관, 나고야성 이동.</li>
-          <li><span class="clock">09:30~11:30</span>나고야성, 혼마루, 정원 산책.</li>
-          <li><span class="clock">11:40~12:30</span>Kinshachi Yokocho 구경.</li>
-          <li><span class="clock">13:00~14:00</span>나고야역 주변 사이제리아 점심.</li>
-          <li><span class="clock">14:30~15:30</span>짐 회수 후 공항 방향 이동.</li>
-          <li><span class="clock">15:30~17:00</span>린쿠 비치 산책.</li>
+          <li><span class="clock">A 08:30~12:30</span>나고야 숙소 체크아웃, 나고야성, Kinshachi Yokocho.</li>
+          <li><span class="clock">B 08:00~12:00</span>게로 숙소 조식, 체크아웃, 나고야 이동, 렌트카 반납.</li>
+          <li><span class="clock">B 12:40~14:20</span>나고야성, Kinshachi Yokocho를 짧게 보고 점심.</li>
+          <li><span class="clock">14:30~15:40</span>짐 회수 후 공항 방향 이동.</li>
+          <li><span class="clock">15:40~17:00</span>린쿠 비치 산책. Plan B는 시간이 밀리면 바로 공항.</li>
           <li><span class="clock">17:30</span>중부국제공항 도착, 20:00 출발 준비.</li>
         </ol>
       </div>
@@ -1283,22 +1321,22 @@
           <tr>
             <td class="compare-time">Day 2 저녁</td>
             <td><strong>오아시스21·Sky-Boat 후 저녁</strong><span>A는 테바사키/야키토리, B는 廣寿司.</span></td>
-            <td>Plan B는 Day 3 나고야 도착이 늦어서 초밥을 전날 먹는 배치.</td>
+            <td>Plan B는 Day 3 밤을 게로 숙박으로 잡아서 초밥을 전날 먹는 배치.</td>
           </tr>
           <tr>
             <td class="compare-time">Day 3 밤</td>
-            <td><strong>Plan A: アーバンクア / Plan B: 게로 온천마을</strong><span>A는 투어 복귀 후 대욕장, B는 게로에서 당일탕.</span></td>
-            <td>Plan B는 시라카와고를 빼야 시간이 맞고, 저녁은 가벼운 안주형으로 둠.</td>
+            <td><strong>Plan A: アーバンクア / Plan B: 게로 숙박</strong><span>A는 투어 복귀 후 대욕장, B는 게로 온천마을에서 1박.</span></td>
+            <td>Plan B는 시라카와고를 빼고 게로 숙박으로 방향을 바꿈.</td>
           </tr>
           <tr>
             <td class="compare-time">Day 4 오전</td>
-            <td><strong>나고야성</strong><span>체크아웃 후 시내권 관광.</span></td>
-            <td>시내권 관광 후 나고야역에서 짐 회수.</td>
+            <td><strong>A: 나고야성 / B: 게로에서 나고야 복귀</strong><span>Plan B는 12:00 전후 나고야 도착.</span></td>
+            <td>Plan B는 나고야성 체류 시간이 짧아지고 린쿠는 선택에 가까움.</td>
           </tr>
           <tr>
             <td class="compare-time">Day 4 오후</td>
             <td><strong>린쿠 비치</strong><span>공항 방향으로 이동하면서 해변 산책.</span></td>
-            <td>해변 산책 후 중부국제공항으로 이동.</td>
+            <td>Plan B는 나고야 도착이 밀리면 린쿠를 생략하고 바로 공항.</td>
           </tr>
         </tbody>
       </table>
@@ -1310,21 +1348,21 @@
         <p>
           Day 2 오전에는 이누야마 성하마을을 다녀오고, 나고야로 돌아와 히츠마부시 점심을 먹습니다.
           Plan B를 고르면 초밥은 Day 2 저녁으로 이동합니다.
-          Day 3는 다카야마·시라카와고 투어 또는 렌트카 다카야마·게로 중 하나로 잡습니다.
-          Day 4는 Plan B면 렌트카를 먼저 반납하고, 나고야성 후 린쿠 비치를 거쳐 공항으로 이동합니다.
+          Day 3는 다카야마·시라카와고 투어 또는 렌트카 다카야마·게로 숙박 중 하나로 잡습니다.
+          Day 4는 Plan B면 게로에서 나고야로 돌아와 렌트카를 반납한 뒤 나고야성과 공항 방향으로 이동합니다.
         </p>
       </div>
       <div class="panel">
         <h3>예약 확인</h3>
         <ul>
           <li>투어 예약 시: 나고야역 복귀 예상 시간과 집합/해산 지점 확인</li>
-          <li>Day 3 Plan B 선택 시: 렌트카 1박 대여, 야간 주차, 고속도로 통행료, 게로 당일탕 접수 시간 확인</li>
+          <li>Day 3 Plan B 선택 시: 게로 숙소, 렌트카 1박 대여, 고속도로 통행료, 숙소 주차 확인</li>
           <li>초밥 예약 시: Plan A는 Day 3 저녁, Plan B는 Day 2 저녁으로 시간 확인</li>
           <li>Day 3 Plan A 선택 시: 나고야역 복귀 시간과 アーバンクア 입장 시간 확인</li>
           <li>Day 2 이누야마 이동 시: 메이테츠 시간표와 히츠마부시 점심 시간 확인</li>
           <li>Day 1 Midland Square 이동 시: 최종 입장 시간과 야키니쿠 종료 시간 확인</li>
           <li>Day 2 Sky-Boat 이동 시: 최종 탑승 시간과 저녁 식당 이동 시간 확인</li>
-          <li>Day 4 린쿠 비치 이동 시: 날씨, 해변 체류 시간, 공항 도착 시간 확인</li>
+          <li>Day 4 린쿠 비치 이동 시: 날씨, Plan B 나고야 도착 시간, 공항 도착 시간 확인</li>
           <li>지브리파크 티켓 날짜와 입장권 종류</li>
           <li>귀국편: 20:00 NGO 출발, 22:15 ICN 도착</li>
         </ul>
