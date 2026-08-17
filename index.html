@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2325-tokugawa" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2328-rinku-restored" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
@@ -89,13 +89,13 @@ frame.addEventListener('load',()=>{
       <div class="leg"><div><strong>Urban Quar Spa & Living (어반쿠아) → 숙소</strong><span><span class="clock">20:50~22:30</span>대욕장으로 마무리 후 숙소 복귀.</span></div><div class="time">회복</div></div>`;
   }
 
-  // Day 4: 도쿠가와 미술관을 실제 일정에 포함하고, 산업기술기념관과 혼동하지 않는다.
+  // Day 4 canonical itinerary: 도쿠가와 미술관과 린쿠 비치를 모두 유지한다.
   const day4=[...d.querySelectorAll('.absolute-day')].find(x=>x.querySelector('.absolute-head strong')?.textContent.trim().startsWith('Day 4'));
   if(day4){
     const title=day4.querySelector('.absolute-head strong');
     const head=day4.querySelector('.absolute-head span');
-    if(title) title.textContent='Day 4 · 나고야 시내 → 공항';
-    if(head) head.textContent='나고야성 → 도쿠가와 미술관 → 노리타케 → 점심·쇼핑 → 공항';
+    if(title) title.textContent='Day 4 · 나고야 시내 → 린쿠 비치 → 공항';
+    if(head) head.textContent='나고야성 → 도쿠가와 미술관 → 노리타케 → 점심·쇼핑 → 린쿠 비치 → 공항';
     const box=day4.querySelector('.absolute-slots');
     if(box) box.innerHTML=`
       <div class="absolute-slot"><div class="slot-time">08:30</div><div class="slot-place"><strong>체크아웃 · 짐 보관</strong><span>나고야역 코인락커/수하물 보관</span></div></div>
@@ -103,23 +103,25 @@ frame.addEventListener('load',()=>{
       <div class="absolute-slot"><div class="slot-time">10:50</div><div class="slot-place"><strong>도쿠가와 미술관</strong><span>Day 4 주요 관람지</span></div></div>
       <div class="absolute-slot"><div class="slot-time">12:20</div><div class="slot-place"><strong>노리타케의 숲</strong><span>도자기·잡화·선물</span></div></div>
       <div class="absolute-slot"><div class="slot-time">13:20</div><div class="slot-place"><strong>사이제리아 → 이온몰 나고야 노리타케 가든</strong><span>점심 후 쇼핑</span></div></div>
-      <div class="absolute-slot"><div class="slot-time">15:10</div><div class="slot-place"><strong>나고야역 → 공항 이동</strong><span>짐 회수 후 중부국제공항으로 이동</span></div></div>
-      <div class="absolute-slot"><div class="slot-time">17:00</div><div class="slot-place"><strong>중부국제공항 (NGO)</strong><span>20:00 출발 준비</span></div></div>`;
+      <div class="absolute-slot"><div class="slot-time">15:10</div><div class="slot-place"><strong>나고야역 → 린쿠토코나메 이동</strong><span>짐 회수 후 공항 방향 이동</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">16:10</div><div class="slot-place"><strong>린쿠 비치</strong><span>공항 앞 바다 산책 · 시간 여유 있을 때 짧게</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">17:10</div><div class="slot-place"><strong>중부국제공항 (NGO)</strong><span>20:00 출발 준비</span></div></div>`;
   }
 
   const day4Detail=[...d.querySelectorAll('.day-detail')].find(x=>x.querySelector('h4')?.textContent.trim().startsWith('Day 4'));
   if(day4Detail){
     const h4=day4Detail.querySelector('h4');
     const ol=day4Detail.querySelector('ol');
-    if(h4) h4.textContent='Day 4 나고야 시내 → 공항';
+    if(h4) h4.textContent='Day 4 나고야 시내 → 린쿠 비치 → 공항';
     if(ol) ol.innerHTML=`
       <li><span class="clock">08:30~09:20</span>체크아웃, 나고야역 짐 보관 후 나고야성 이동.</li>
       <li><span class="clock">09:30~10:30</span>나고야성 관람.</li>
       <li><span class="clock">10:50~12:00</span><strong>도쿠가와 미술관</strong> 관람.</li>
       <li><span class="clock">12:20~13:10</span>노리타케의 숲.</li>
       <li><span class="clock">13:20~15:00</span>사이제리아 점심 → 이온몰 나고야 노리타케 가든 쇼핑.</li>
-      <li><span class="clock">15:10~17:00</span>나고야역에서 짐 회수 후 중부국제공항으로 이동.</li>
-      <li><span class="clock">17:00</span>중부국제공항 도착, 20:00 출발 준비.</li>`;
+      <li><span class="clock">15:10~16:10</span>나고야역에서 짐 회수 후 린쿠토코나메로 이동.</li>
+      <li><span class="clock">16:10~16:50</span><strong>린쿠 비치</strong> 짧게 산책.</li>
+      <li><span class="clock">17:10</span>중부국제공항 도착, 20:00 출발 준비.</li>`;
   }
 
   if(day2){
@@ -130,7 +132,7 @@ frame.addEventListener('load',()=>{
   }
   if(day4){
     const text=day4.textContent;
-    const required=['나고야성','도쿠가와 미술관','노리타케의 숲','사이제리아','이온몰 나고야 노리타케 가든','중부국제공항'];
+    const required=['나고야성','도쿠가와 미술관','노리타케의 숲','사이제리아','이온몰 나고야 노리타케 가든','린쿠 비치','중부국제공항'];
     const bad=required.filter(name=>text.split(name).length-1!==1);
     if(bad.length) console.error('Day 4 duplicate/missing check failed:',bad);
   }
