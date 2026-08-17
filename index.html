@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2205" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2208" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
@@ -64,6 +64,15 @@ frame.addEventListener('load',()=>{
     if(t.includes('저녁 → 天然温泉アーバンクア → 숙소 2차')){
       strong.textContent='Urban Quar Spa & Living (어반쿠아) 대욕장 → 숙소';
       desc.innerHTML='<span class="clock">20:30~22:30</span>Urban Quar Spa & Living에서 대욕장으로 마무리한 뒤 숙소 복귀.';
+    }
+  }
+
+  // 기존 상세안에 따로 있던 JOYLAB 단독 leg는 위 쇼핑 동선에 합쳐졌으므로 제거
+  for(const leg of d.querySelectorAll('.leg')){
+    const strong=leg.querySelector('strong');
+    const span=leg.querySelector('span');
+    if(strong && strong.textContent.includes('JOYLAB') && span && span.textContent.includes('16:50~17:20')){
+      leg.remove();
     }
   }
 
