@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2315-yabaton-doteyaki" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2320-yabaton-ramuchi-backup" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
@@ -16,7 +16,6 @@ frame.addEventListener('load',()=>{
   if(!d||!d.body||d.body.dataset.fixed==='1') return;
   d.body.dataset.fixed='1';
 
-  // 공통 표기/확정 수정. 같은 문구를 반복 치환하지 않는다.
   const replaceText=(a,b)=>{
     const w=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT); const nodes=[];
     while(w.nextNode()) nodes.push(w.currentNode);
@@ -37,7 +36,22 @@ frame.addEventListener('load',()=>{
   ];
   for(const[a,b]of labels) replaceText(a,b);
 
-  // Day 2는 기존 조각을 수정하지 않고 단일 canonical 목록으로 통째로 재구성한다.
+  // Day 1 점심: 야바톤을 메인으로, 라무치는 대안 후보로 유지한다.
+  const day1=[...d.querySelectorAll('.absolute-day')].find(x=>x.querySelector('.absolute-head strong')?.textContent.trim()==='Day 1');
+  if(day1){
+    const yabaton=[...day1.querySelectorAll('.absolute-slot')].find(x=>x.querySelector('.slot-place strong')?.textContent.includes('矢場とん (야바톤)'));
+    const sub=yabaton?.querySelector('.slot-place span');
+    if(sub && !sub.textContent.includes('라무치')) sub.textContent += ' · 대안 후보: 黒豚屋 らむちぃ (쿠로부타야 라무치)';
+  }
+  for(const leg of d.querySelectorAll('.leg')){
+    const title=leg.querySelector('strong')?.textContent || '';
+    const desc=leg.querySelector('span');
+    if(title.includes('矢場とん (야바톤)') && desc && !desc.textContent.includes('라무치')){
+      desc.append(' · 대안 후보: 黒豚屋 らむちぃ (쿠로부타야 라무치)');
+      break;
+    }
+  }
+
   const day2=[...d.querySelectorAll('.absolute-day')].find(x=>x.querySelector('.absolute-head strong')?.textContent.trim()==='Day 2');
   if(day2){
     const head=day2.querySelector('.absolute-head span');
@@ -56,7 +70,6 @@ frame.addEventListener('load',()=>{
       <div class="absolute-slot"><div class="slot-time">22:30</div><div class="slot-place"><strong>숙소 2차</strong><span>편의점 안주, 짐 정리, Day 3 준비</span></div></div>`;
   }
 
-  // Day 2 상세 동선도 같은 canonical 목록만 사용한다.
   const day2Choice=[...d.querySelectorAll('.choice')].find(x=>x.querySelector('.choice-head h3')?.textContent.trim().startsWith('Day 2:'));
   if(day2Choice){
     const h3=day2Choice.querySelector('.choice-head h3');
@@ -75,7 +88,6 @@ frame.addEventListener('load',()=>{
       <div class="leg"><div><strong>Urban Quar Spa & Living (어반쿠아) → 숙소</strong><span><span class="clock">20:50~22:30</span>대욕장으로 마무리 후 숙소 복귀.</span></div><div class="time">회복</div></div>`;
   }
 
-  // 검수 룰: Day 2 상단 시간표에서 핵심 장소는 정확히 1회만 등장해야 한다.
   if(day2){
     const text=day2.textContent;
     const required=['카페 카코 부쵸','이누야마성','아츠타 호라이켄 마츠자카야점','포켓몬 센터 나고야','점프 숍 나고야','JOYLAB','오스 상점가','오스칸논','중부전력 미라이 타워','오아시스21','선샤인 사카에','테바사키 무츠미','프린세스 거리','Urban Quar Spa & Living','도테야끼'];
