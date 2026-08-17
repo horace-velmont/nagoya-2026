@@ -3,7 +3,7 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>나고야 3박4일 동선 초안</title></head>
 <body><script>
 (async()=>{
- const source=await fetch('./index-base.html?v=20260817-kitte-priority').then(r=>r.text()); let html=source;
+ const source=await fetch('./index-base.html?v=20260817-kitte-sushi-fixed').then(r=>r.text()); let html=source;
  const replacements=[
  ['<div class="slot-time">11:35</div>\n                <div class="slot-place"><strong>矢場とん</strong><span>나고야역/사카에 미소카츠</span></div>','<div class="slot-time">11:20</div>\n                <div class="slot-place"><strong>黒豚屋 らむちぃ</strong><span>사카에 네기 미소카츠 · 웨이팅 포함</span></div>'],
  ['<div class="slot-time">12:40</div>\n                <div class="slot-place"><strong>지브리파크 이동</strong><span>Fujigaoka, Linimo 경유</span></div>','<div class="slot-time">12:10</div>\n                <div class="slot-place"><strong>지브리파크 이동</strong><span>사카에 → Fujigaoka → Linimo</span></div>'],
@@ -14,7 +14,7 @@
  ['<div class="meal-place"><strong>矢場とん</strong><span>나고야역/사카에 미소카츠</span></div>','<div class="meal-place"><strong>黒豚屋 らむちぃ</strong><span>사카에 네기 미소카츠</span></div>'],
  ['<strong>矢場とん</strong>\n              <span>Day 1 점심. 나고야 도착 후 지브리파크 이동 전 식사.</span>','<strong>黒豚屋 らむちぃ</strong>\n              <span>Day 1 점심. 사카에에서 네기 미소카츠 후 지브리파크 이동.</span>']
  ]; replacements.forEach(([a,b])=>html=html.replace(a,b));
- const sync=`<div class="section"><h2>트리플 일정 싱크 · 선택 방문</h2><div class="day-detail"><h4>Day 2</h4><ol><li><strong>이누야마 성하마을</strong>의 트리플 저장 장소들은 기존 이누야마 동선 안에서 순서대로 확인. 시간이 밀리면 개별 상점은 스킵.</li><li><strong>오스 상점가 → 사카에 → 오아시스21</strong> 구간의 저장 장소도 이동하면서 선택 방문.</li></ol></div><div class="day-detail"><h4>Day 3</h4><ol><li><span class="clock">우선</span><strong>KITTE Nagoya</strong> — 투어 전후 나고야역 일정에서 우선 방문.</li><li><span class="clock">선택</span><strong>초밥집</strong> — KITTE보다 우선순위 낮음. 시간·배고픔에 따라 선택하고 빠듯하면 스킵.</li></ol></div><div class="day-detail"><h4>Day 4</h4><ol><li><strong>Maker's Pier</strong> — 오전 선택 일정. 시간이 부족하면 가장 먼저 스킵.</li><li><strong>나고야성</strong> — 기존 일정 유지.</li><li><strong>노리타케의 숲 → Saizeriya Noritake Shinmachi → 이온몰 나고야 노리타케 가든</strong> — 같은 권역으로 묶어서 이동.</li><li><strong>도쿠가와 미술관</strong> — 트리플 추가 장소. 시간 여유가 있을 때만 방문하고, 공항 이동이 빠듯하면 스킵.</li><li><strong>NGO 공항</strong> — 출국 시간 우선, 선택 일정 때문에 공항 이동은 늦추지 않기.</li></ol></div></div>`;
+ const sync=`<div class="section"><h2>트리플 일정 싱크 · 선택 방문</h2><div class="day-detail"><h4>Day 2</h4><ol><li><strong>이누야마 성하마을</strong>의 트리플 저장 장소들은 기존 이누야마 동선 안에서 순서대로 확인. 시간이 밀리면 개별 상점은 스킵.</li><li><strong>오스 상점가 → 사카에 → 오아시스21</strong> 구간의 저장 장소도 이동하면서 선택 방문.</li></ol></div><div class="day-detail"><h4>Day 3</h4><ol><li><span class="clock">우선</span><strong>KITTE Nagoya</strong> — 나고야역 복귀 후 우선 들르기.</li><li><span class="clock">식사 고정</span><strong>초밥집</strong> — 저녁 식사 일정. 스킵하지 않음. KITTE를 먼저 보고 초밥을 먹는 흐름.</li></ol></div><div class="day-detail"><h4>Day 4</h4><ol><li><strong>Maker's Pier</strong> — 오전 선택 일정. 시간이 부족하면 가장 먼저 스킵.</li><li><strong>나고야성</strong> — 기존 일정 유지.</li><li><strong>노리타케의 숲 → Saizeriya Noritake Shinmachi → 이온몰 나고야 노리타케 가든</strong> — 같은 권역으로 묶어서 이동.</li><li><strong>도쿠가와 미술관</strong> — 트리플 추가 장소. 시간 여유가 있을 때만 방문하고, 공항 이동이 빠듯하면 스킵.</li><li><strong>NGO 공항</strong> — 출국 시간 우선, 선택 일정 때문에 공항 이동은 늦추지 않기.</li></ol></div></div>`;
  html=html.replace('<div class="section">\n      <h2>핵심 동선</h2>',sync+'\n<div class="section">\n      <h2>핵심 동선</h2>');
  document.open();document.write(html);document.close();
 })();
