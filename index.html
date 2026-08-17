@@ -8,33 +8,46 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2131" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2142" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
-function applyFixes(){
+frame.addEventListener('load',()=>{
   const d=frame.contentDocument;
-  if(!d||!d.body)return false;
-  let h=d.body.innerHTML;
-  const rules=[
+  if(!d||!d.body||d.body.dataset.fixed==='1') return;
+  d.body.dataset.fixed='1';
+
+  const exactTextRules=[
+    ['廣寿司 JR名古屋駅店','KITTE Nagoya (킷테 나고야) 내 초밥집'],
+    ['투어 복귀 후 초밥','투어 복귀 후 KITTE 안 초밥집에서 저녁 · 식사 고정'],
+    ['다카야마·시라카와고 → 초밥 → 돈키호테','다카야마·시라카와고 → KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테'],
+    ['초밥 → 돈키호테 → 숙소','KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소']
+  ];
+
+  const labelRules=[
     ['矢場とん','黒豚屋 らむちぃ (쿠로부타야 라무치)'],
     ['Grand Warehouse','Grand Warehouse (그랜드 웨어하우스)'],
     ['Midland Square','Midland Square (미들랜드 스퀘어)'],
     ['JOYLAB','JOYLAB (조이라보)'],
     ['Sky-Boat','Sky-Boat (스카이보트)'],
-    ['廣寿司 JR名古屋駅店','KITTE Nagoya (킷테 나고야) 내 초밥집'],
-    ['투어 복귀 후 초밥','투어 복귀 후 KITTE 안 초밥집에서 저녁 · 식사 고정'],
-    ['다카야마·시라카와고 → 초밥 → 돈키호테','다카야마·시라카와고 → KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테'],
-    ['초밥 → 돈키호테 → 숙소','KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소'],
     ['焼肉ジャック','焼肉ジャック (야키니쿠 잭)'],
     ['돈키호테 栄本店','돈키호테 栄本店 (사카에 본점)']
   ];
-  for(const [a,b] of rules) h=h.split(a).join(b);
-  d.body.innerHTML=h;
-  return true;
-}
-frame.addEventListener('load',()=>{
-  applyFixes();
-  let n=0;const timer=setInterval(()=>{applyFixes();if(++n>=10)clearInterval(timer)},250);
+
+  const walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);
+  const nodes=[];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+
+  for(const node of nodes){
+    let t=node.nodeValue;
+    for(const [a,b] of exactTextRules){
+      if(t.includes(a)) t=t.split(a).join(b);
+    }
+    for(const [a,b] of labelRules){
+      if(t.includes(b)) continue;
+      if(t.includes(a)) t=t.split(a).join(b);
+    }
+    node.nodeValue=t;
+  }
 });
 </script>
 </body>
