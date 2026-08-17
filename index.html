@@ -8,7 +8,7 @@
 <body>
 <script>
 (async () => {
-  const source = await fetch('./index-base.html?v=20260817-triple-sync').then((r) => r.text());
+  const source = await fetch('./index-base.html?v=20260817-ramuchii-clean').then((r) => r.text());
   let html = source;
 
   const replacements = [
@@ -35,45 +35,6 @@
   ];
 
   for (const [before, after] of replacements) html = html.replace(before, after);
-
-  const tripleSync = `
-    <div class="section">
-      <h2>트리플 추가 장소 · 시간되면 들르기</h2>
-      <div class="day-detail">
-        <h4>Day 1</h4>
-        <ol>
-          <li><span class="clock">우선</span>라무치 → 지브리파크 → 焼肉ジャック → Midland Square 흐름 유지.</li>
-          <li><span class="clock">스킵 가능</span>도착·라무치 웨이팅이 길어지면 중간 추가 일정 없이 지브리 입장을 우선.</li>
-        </ol>
-      </div>
-      <div class="day-detail">
-        <h4>Day 2 · 트리플 싱크</h4>
-        <ol>
-          <li><span class="clock">시간되면</span>이누야마 성하마을의 <strong>쇼와요코초</strong>. 이누야마성 동선 안에서 자연스럽게 추가.</li>
-          <li><span class="clock">점심 후보</span><strong>아츠타 호라이켄 마츠자카야점</strong>. 기존 히츠마부시 후보 중 트리플에 넣은 곳을 우선 표시.</li>
-          <li><span class="clock">시간되면</span>오스상점가 안의 트리플 추가 상점·간식 포인트는 지나가며 선택. 전부 방문할 필요 없음.</li>
-          <li><span class="clock">우선</span>오아시스21 → SUNSHINE SAKAE Sky-Boat → 저녁 → Urban Quar 흐름은 트리플과 동일하게 유지.</li>
-        </ol>
-      </div>
-      <div class="day-detail">
-        <h4>Day 3 · 트리플 싱크</h4>
-        <ol>
-          <li><span class="clock">시간되면</span><strong>KITTE Nagoya</strong>. 투어 집합 전후 나고야역에서 시간이 남을 때만.</li>
-          <li><span class="clock">우선</span>다카야마·시라카와고 종일투어와 복귀 후 저녁을 우선하고, 피곤하면 추가 쇼핑은 스킵.</li>
-        </ol>
-      </div>
-      <div class="day-detail">
-        <h4>Day 4 · 트리플 싱크</h4>
-        <ol>
-          <li><span class="clock">우선</span><strong>노리타케의 숲</strong> → <strong>Saizeriya Noritake Shinmachi</strong> → <strong>AEON MALL Nagoya Noritake Garden</strong> 순으로 묶기.</li>
-          <li><span class="clock">시간되면</span><strong>토요타 산업기술기념관</strong>. 노리타케 권역에서 시간이 남을 때만 방문.</li>
-          <li><span class="clock">스킵 가능</span>나고야성·린쿠 비치는 당일 시간/체력에 따라 과감히 생략. 마지막 날은 쇼핑과 공항 이동 우선.</li>
-          <li><span class="clock">고정</span>20:00 NGO 출발. 공항 도착 여유는 유지.</li>
-        </ol>
-      </div>
-    </div>`;
-
-  html = html.replace('<div class="section">\n      <h2>핵심 동선</h2>', tripleSync + '\n\n    <div class="section">\n      <h2>핵심 동선</h2>');
 
   document.open();
   document.write(html);
