@@ -17,18 +17,6 @@ function extractTemplate(afterMarker) {
   return index.slice(tick1 + 1, tick2);
 }
 
-function titlesFrom(html) {
-  return [...html.matchAll(/<strong>(.*?)<\/strong>/gs)].map(m => m[1].replace(/<[^>]+>/g, '').trim());
-}
-
-function normalize(title) {
-  return title
-    .replace(/\([^)]*\)/g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
-}
-
 const canonicalAliases = [
   { id: 'cafe_kako', names: ['카페 카코 부쵸'] },
   { id: 'inuyama_castle', names: ['이누야마성'] },
@@ -56,7 +44,6 @@ function idsInText(text) {
   return out;
 }
 
-// 1) Day 2 must be fully rebuilt from one canonical top-board template.
 const day2Board = extractTemplate('if(box) box.innerHTML=');
 assert(day2Board, 'Day 2 canonical board template is missing.');
 if (day2Board) {
@@ -65,9 +52,7 @@ if (day2Board) {
     const count = ids.filter(id => id === entry.id).length;
     assert(count === 1, `Day 2 board must contain ${entry.id} exactly once; found ${count}.`);
   }
-
   assert((day2Board.match(/도테야끼/g) || []).length === 1, 'Day 2 board must mention 도테야끼 exactly once.');
-
   const times = [...day2Board.matchAll(/slot-time\">(\d{2}:\d{2})/g)].map(m => m[1]);
   const minutes = times.map(t => Number(t.slice(0,2))*60 + Number(t.slice(3)));
   for (let i = 1; i < minutes.length; i++) {
@@ -75,7 +60,6 @@ if (day2Board) {
   }
 }
 
-// 2) Detailed Day 2 must use one rebuilt legs template, not legacy leftovers.
 const day2Legs = extractTemplate('if(legs) legs.innerHTML=');
 assert(day2Legs, 'Day 2 canonical detail template is missing.');
 if (day2Legs) {
@@ -87,16 +71,14 @@ if (day2Legs) {
   assert(day2Legs.includes('도테야끼'), 'Day 2 detail must mention 도테야끼.');
 }
 
-// 3) Regression guards for the bugs that already happened.
 assert(!index.includes('setInterval('), 'Repeated runtime patching is forbidden (setInterval found).');
 assert(!index.includes('applyFixes'), 'Repeated applyFixes-style patching is forbidden.');
 assert(index.includes("d.body.dataset.fixed='1'"), 'Single-application render guard is missing.');
 assert(index.includes("KITTE Nagoya (킷테 나고야) 내 초밥집"), 'Day 3 KITTE sushi mapping is missing.');
 assert(index.includes("Urban Quar Spa & Living (어반쿠아)"), 'Urban Quar mapping is missing.');
 assert(index.includes("['矢場とん','矢場とん (야바톤)']"), 'Day 1 Yabaton mapping is missing.');
-assert(!index.includes('黒豚屋 らむちぃ'), 'Ramuchi must not remain after switching Day 1 back to Yabaton.');
+assert(index.includes('대안 후보: 黒豚屋 らむちぃ (쿠로부타야 라무치)'), 'Ramuchi must remain as a Day 1 backup candidate.');
 
-// 4) Public-facing wording must not expose source/preparation process.
 const forbiddenPublicPhrases = [
   '트리플에서 저장', '트리플 저장', '사용자가 정리', '원본 자료', '내부 메모', '자료 출처'
 ];
@@ -104,7 +86,6 @@ for (const phrase of forbiddenPublicPhrases) {
   assert(!index.includes(phrase) && !base.includes(phrase), `Forbidden public phrase found: ${phrase}`);
 }
 
-// 5) Guard against repeated Korean-parenthesis accumulation.
 const repeatedParen = /(\([^()]{2,40}\))(?:\s*\1)+/;
 assert(!repeatedParen.test(index), 'Repeated parenthetical translation detected in index.html.');
 assert(!repeatedParen.test(base), 'Repeated parenthetical translation detected in index-base.html.');
@@ -116,7 +97,7 @@ if (failures.length) {
 }
 
 console.log('Itinerary validation passed.');
-console.log('- Day 1 Yabaton mapping present; Ramuchi absent');
+console.log('- Day 1 Yabaton primary / Ramuchi backup mapping present');
 console.log('- Day 2 canonical board: unique tracked places');
 console.log('- Day 2 doteyaki mention present');
 console.log('- Day 2 times: strictly increasing');
