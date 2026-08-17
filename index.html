@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2208" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2210" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
@@ -35,12 +35,10 @@ frame.addEventListener('load',()=>{
   while(walker.nextNode())nodes.push(walker.currentNode);
   for(const node of nodes){let t=node.nodeValue;for(const[a,b]of exactTextRules){if(t.includes(a))t=t.split(a).join(b)}for(const[a,b]of labelRules){if(t.includes(b))continue;if(t.includes(a))t=t.split(a).join(b)}node.nodeValue=t}
 
-  // Day 2: 기존 일정의 역할/시간대는 유지하고 실제 방문 장소를 그 안에 매칭
   for(const strong of d.querySelectorAll('strong')){
     const t=strong.textContent.trim();
     const desc=strong.nextElementSibling;
     if(!desc) continue;
-
     if(t.includes('나고야 모닝 → 이누야마')){
       strong.textContent='숙소 → 카페 카코 부쵸 → 메이테쓰 나고야역 → 이누야마';
       desc.innerHTML='<span class="clock">08:20~10:00</span>숙소 출발 → 카페 카코 부쵸에서 모닝 → 메이테쓰 나고야역에서 이누야마로 이동.';
@@ -67,16 +65,12 @@ frame.addEventListener('load',()=>{
     }
   }
 
-  // 기존 상세안에 따로 있던 JOYLAB 단독 leg는 위 쇼핑 동선에 합쳐졌으므로 제거
-  for(const leg of d.querySelectorAll('.leg')){
-    const strong=leg.querySelector('strong');
-    const span=leg.querySelector('span');
-    if(strong && strong.textContent.includes('JOYLAB') && span && span.textContent.includes('16:50~17:20')){
-      leg.remove();
-    }
+  // 상세 동선의 기존 JOYLAB 단독 항목 제거
+  for(const leg of [...d.querySelectorAll('.leg')]){
+    const title=leg.querySelector('strong')?.textContent || '';
+    if(title.includes('JOYLAB')) leg.remove();
   }
 
-  // 상단 Day 2 시간표도 같은 의미로 맞춤
   const day2=[...d.querySelectorAll('.absolute-day')].find(x=>x.querySelector('.absolute-head strong')?.textContent.trim()==='Day 2');
   if(day2){
     const head=day2.querySelector('.absolute-head span');
@@ -90,6 +84,12 @@ frame.addEventListener('load',()=>{
     set('미라이타워','미라이 타워 → 오아시스21 → 선샤인 사카에','사카에 야경');
     set('저녁','테바사키 무츠미 → 프린세스 거리','저녁·산책');
     set('대욕장','Urban Quar Spa & Living (어반쿠아)','대욕장 후 숙소 복귀');
+
+    // 상단 시간표의 기존 JOYLAB 단독 슬롯도 제거
+    for(const slot of [...day2.querySelectorAll('.absolute-slot')]){
+      const title=slot.querySelector('.slot-place strong')?.textContent || '';
+      if(title.includes('JOYLAB')) slot.remove();
+    }
   }
 });
 </script>
