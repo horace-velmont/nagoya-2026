@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2202" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2205" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
@@ -22,44 +22,65 @@ frame.addEventListener('load',()=>{
     ['다카야마·시라카와고 → 초밥 → 돈키호테','다카야마·시라카와고 → KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테'],
     ['초밥 → 돈키호테 → 숙소','KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소']
   ];
-
   const labelRules=[
     ['矢場とん','黒豚屋 らむちぃ (쿠로부타야 라무치)'],
     ['Grand Warehouse','Grand Warehouse (그랜드 웨어하우스)'],
     ['Midland Square','Midland Square (미들랜드 스퀘어)'],
-    ['JOYLAB','JOYLAB (조이라보)'],
+    ['JOYLAB','JOYLAB (조이랩)'],
     ['Sky-Boat','Sky-Boat (스카이보트)'],
     ['焼肉ジャック','焼肉ジャック (야키니쿠 잭)'],
     ['돈키호테 栄本店','돈키호테 栄本店 (사카에 본점)']
   ];
+  const walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);const nodes=[];
+  while(walker.nextNode())nodes.push(walker.currentNode);
+  for(const node of nodes){let t=node.nodeValue;for(const[a,b]of exactTextRules){if(t.includes(a))t=t.split(a).join(b)}for(const[a,b]of labelRules){if(t.includes(b))continue;if(t.includes(a))t=t.split(a).join(b)}node.nodeValue=t}
 
-  const walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);
-  const nodes=[];
-  while(walker.nextNode()) nodes.push(walker.currentNode);
-
-  for(const node of nodes){
-    let t=node.nodeValue;
-    for(const [a,b] of exactTextRules){ if(t.includes(a)) t=t.split(a).join(b); }
-    for(const [a,b] of labelRules){ if(t.includes(b)) continue; if(t.includes(a)) t=t.split(a).join(b); }
-    node.nodeValue=t;
-  }
-
+  // Day 2: 기존 일정의 역할/시간대는 유지하고 실제 방문 장소를 그 안에 매칭
   for(const strong of d.querySelectorAll('strong')){
     const t=strong.textContent.trim();
+    const desc=strong.nextElementSibling;
+    if(!desc) continue;
+
+    if(t.includes('나고야 모닝 → 이누야마')){
+      strong.textContent='숙소 → 카페 카코 부쵸 → 메이테쓰 나고야역 → 이누야마';
+      desc.innerHTML='<span class="clock">08:20~10:00</span>숙소 출발 → 카페 카코 부쵸에서 모닝 → 메이테쓰 나고야역에서 이누야마로 이동.';
+    }
+    if(t==='이누야마 성하마을'){
+      strong.textContent='이누야마성 → 이누야마성 쇼와 골목';
+      desc.innerHTML='<span class="clock">10:00~12:10</span>이누야마성 관람 후 성하마을의 쇼와 골목까지 둘러보기.';
+    }
+    if(t.includes('나고야 복귀 → 히츠마부시')){
+      strong.textContent='메이테쓰 나고야역 → 아츠타 호라이켄 마츠자카야점';
+      desc.innerHTML='<span class="clock">12:20~14:20</span>나고야로 복귀해 아츠타 호라이켄 마츠자카야점에서 히츠마부시 점심.';
+    }
     if(t==='오스상점가·오스관음'){
-      const desc=strong.nextElementSibling;
-      if(desc){
-        desc.innerHTML='<span class="clock">15:00~16:40</span><strong style="display:inline">오스권역 방문:</strong> 코메효 본점 나고야 → 오스 상점가 → 오스칸논. 주변 상점은 동선상 가까운 곳부터 둘러보고 시간에 따라 조정.';
-      }
+      strong.textContent='사카에 쇼핑 → 오스';
+      desc.innerHTML='<span class="clock">14:20~17:20</span>포켓몬 센터 나고야 → 점프 숍 나고야 → JOYLAB (조이랩) 나고야점 → 오스 상점가 → 오스칸논. 쇼핑 구간은 시간에 따라 체류시간 조정.';
+    }
+    if(t.includes('미라이타워·히사야오도리 → 오아시스21 → Sky-Boat')){
+      strong.textContent='사카에 야경·저녁';
+      desc.innerHTML='<span class="clock">17:30~20:30</span>중부전력 미라이 타워 → 오아시스21 → 선샤인 사카에 → 테바사키 무츠미 → 프린세스 거리.';
+    }
+    if(t.includes('저녁 → 天然温泉アーバンクア → 숙소 2차')){
+      strong.textContent='Urban Quar Spa & Living (어반쿠아) 대욕장 → 숙소';
+      desc.innerHTML='<span class="clock">20:30~22:30</span>Urban Quar Spa & Living에서 대욕장으로 마무리한 뒤 숙소 복귀.';
     }
   }
 
-  for(const slot of d.querySelectorAll('.absolute-slot')){
-    const place=slot.querySelector('.slot-place strong');
-    if(place && place.textContent.trim()==='오스상점가'){
-      const desc=place.nextElementSibling;
-      if(desc) desc.textContent='오스권역 · 코메효 본점 나고야 → 오스 상점가 → 오스칸논';
-    }
+  // 상단 Day 2 시간표도 같은 의미로 맞춤
+  const day2=[...d.querySelectorAll('.absolute-day')].find(x=>x.querySelector('.absolute-head strong')?.textContent.trim()==='Day 2');
+  if(day2){
+    const head=day2.querySelector('.absolute-head span');
+    if(head) head.textContent='모닝 → 이누야마 → 히츠마부시 → 사카에·오스 → 야경·저녁 → 대욕장';
+    const slots=[...day2.querySelectorAll('.absolute-slot')];
+    const set=(needle,title,sub)=>{const s=slots.find(x=>x.textContent.includes(needle));if(!s)return;const p=s.querySelector('.slot-place');if(p)p.innerHTML='<strong>'+title+'</strong><span>'+sub+'</span>'};
+    set('나고야 모닝','카페 카코 부쵸','모닝 후 메이테쓰 나고야역 → 이누야마');
+    set('이누야마 성하마을','이누야마성 → 이누야마성 쇼와 골목','성·성하마을 산책');
+    set('히츠마부시','아츠타 호라이켄 마츠자카야점','히츠마부시 점심');
+    set('오스상점가','포켓몬 센터 → 점프 숍 → 조이랩 → 오스 상점가 → 오스칸논','사카에 쇼핑부터 오스까지 연결');
+    set('미라이타워','미라이 타워 → 오아시스21 → 선샤인 사카에','사카에 야경');
+    set('저녁','테바사키 무츠미 → 프린세스 거리','저녁·산책');
+    set('대욕장','Urban Quar Spa & Living (어반쿠아)','대욕장 후 숙소 복귀');
   }
 });
 </script>
