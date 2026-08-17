@@ -66,6 +66,8 @@ if (day2Board) {
     assert(count === 1, `Day 2 board must contain ${entry.id} exactly once; found ${count}.`);
   }
 
+  assert((day2Board.match(/도테야끼/g) || []).length === 1, 'Day 2 board must mention 도테야끼 exactly once.');
+
   const times = [...day2Board.matchAll(/slot-time\">(\d{2}:\d{2})/g)].map(m => m[1]);
   const minutes = times.map(t => Number(t.slice(0,2))*60 + Number(t.slice(3)));
   for (let i = 1; i < minutes.length; i++) {
@@ -82,6 +84,7 @@ if (day2Legs) {
     const matched = entry.names.filter(n => lower.includes(n.toLowerCase()));
     assert(matched.length >= 1, `Day 2 detail is missing ${entry.id}.`);
   }
+  assert(day2Legs.includes('도테야끼'), 'Day 2 detail must mention 도테야끼.');
 }
 
 // 3) Regression guards for the bugs that already happened.
@@ -90,6 +93,8 @@ assert(!index.includes('applyFixes'), 'Repeated applyFixes-style patching is for
 assert(index.includes("d.body.dataset.fixed='1'"), 'Single-application render guard is missing.');
 assert(index.includes("KITTE Nagoya (킷테 나고야) 내 초밥집"), 'Day 3 KITTE sushi mapping is missing.');
 assert(index.includes("Urban Quar Spa & Living (어반쿠아)"), 'Urban Quar mapping is missing.');
+assert(index.includes("['矢場とん','矢場とん (야바톤)']"), 'Day 1 Yabaton mapping is missing.');
+assert(!index.includes('黒豚屋 らむちぃ'), 'Ramuchi must not remain after switching Day 1 back to Yabaton.');
 
 // 4) Public-facing wording must not expose source/preparation process.
 const forbiddenPublicPhrases = [
@@ -111,7 +116,9 @@ if (failures.length) {
 }
 
 console.log('Itinerary validation passed.');
+console.log('- Day 1 Yabaton mapping present; Ramuchi absent');
 console.log('- Day 2 canonical board: unique tracked places');
+console.log('- Day 2 doteyaki mention present');
 console.log('- Day 2 times: strictly increasing');
 console.log('- Day 2 detail: required places present');
 console.log('- Runtime patching: single-application guard enforced');
