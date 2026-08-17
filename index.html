@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2142" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2148" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
@@ -47,6 +47,24 @@ frame.addEventListener('load',()=>{
       if(t.includes(a)) t=t.split(a).join(b);
     }
     node.nodeValue=t;
+  }
+
+  for(const strong of d.querySelectorAll('strong')){
+    const t=strong.textContent.trim();
+    if(t==='오스상점가·오스관음'){
+      const desc=strong.nextElementSibling;
+      if(desc){
+        desc.innerHTML='<span class="clock">15:00~16:40</span>오스관음 → 니오몬도리 → 반쇼지 → 신텐치도리 → 아카몬도리 순으로 훑기. 길 가다 간식·잡화·빈티지·서브컬처 가게는 시간 되는 만큼 선택.';
+      }
+    }
+  }
+
+  for(const slot of d.querySelectorAll('.absolute-slot')){
+    const place=slot.querySelector('.slot-place strong');
+    if(place && place.textContent.trim()==='오스상점가'){
+      const desc=place.nextElementSibling;
+      if(desc) desc.textContent='오스관음 → 니오몬도리 → 반쇼지 → 신텐치도리 → 아카몬도리';
+    }
   }
 });
 </script>
