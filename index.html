@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2214-dedup" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2218-canonical-day2" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
@@ -16,13 +16,17 @@ frame.addEventListener('load',()=>{
   if(!d||!d.body||d.body.dataset.fixed==='1') return;
   d.body.dataset.fixed='1';
 
-  const exactTextRules=[
-    ['廣寿司 JR名古屋駅店','KITTE Nagoya (킷테 나고야) 내 초밥집'],
-    ['투어 복귀 후 초밥','투어 복귀 후 KITTE 안 초밥집에서 저녁 · 식사 고정'],
-    ['다카야마·시라카와고 → 초밥 → 돈키호테','다카야마·시라카와고 → KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테'],
-    ['초밥 → 돈키호테 → 숙소','KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소']
-  ];
-  const labelRules=[
+  // 공통 표기/확정 수정. 같은 문구를 반복 치환하지 않는다.
+  const replaceText=(a,b)=>{
+    const w=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT); const nodes=[];
+    while(w.nextNode()) nodes.push(w.currentNode);
+    for(const n of nodes){ if(n.nodeValue.includes(a) && !n.nodeValue.includes(b)) n.nodeValue=n.nodeValue.split(a).join(b); }
+  };
+  replaceText('廣寿司 JR名古屋駅店','KITTE Nagoya (킷테 나고야) 내 초밥집');
+  replaceText('투어 복귀 후 초밥','투어 복귀 후 KITTE 안 초밥집에서 저녁 · 식사 고정');
+  replaceText('다카야마·시라카와고 → 초밥 → 돈키호테','다카야마·시라카와고 → KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테');
+  replaceText('초밥 → 돈키호테 → 숙소','KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소');
+  const labels=[
     ['矢場とん','黒豚屋 らむちぃ (쿠로부타야 라무치)'],
     ['Grand Warehouse','Grand Warehouse (그랜드 웨어하우스)'],
     ['Midland Square','Midland Square (미들랜드 스퀘어)'],
@@ -31,72 +35,52 @@ frame.addEventListener('load',()=>{
     ['焼肉ジャック','焼肉ジャック (야키니쿠 잭)'],
     ['돈키호테 栄本店','돈키호테 栄本店 (사카에 본점)']
   ];
-  const walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);const nodes=[];
-  while(walker.nextNode())nodes.push(walker.currentNode);
-  for(const node of nodes){let t=node.nodeValue;for(const[a,b]of exactTextRules){if(t.includes(a))t=t.split(a).join(b)}for(const[a,b]of labelRules){if(t.includes(b))continue;if(t.includes(a))t=t.split(a).join(b)}node.nodeValue=t}
+  for(const[a,b]of labels) replaceText(a,b);
 
-  for(const strong of d.querySelectorAll('strong')){
-    const t=strong.textContent.trim();
-    const desc=strong.nextElementSibling;
-    if(!desc) continue;
-    if(t.includes('나고야 모닝 → 이누야마')){
-      strong.textContent='숙소 → 카페 카코 부쵸 → 메이테쓰 나고야역 → 이누야마';
-      desc.innerHTML='<span class="clock">08:20~10:00</span>숙소 출발 → 카페 카코 부쵸에서 모닝 → 메이테쓰 나고야역에서 이누야마로 이동.';
-    }
-    if(t==='이누야마 성하마을'){
-      strong.textContent='이누야마성 → 이누야마성 쇼와 골목';
-      desc.innerHTML='<span class="clock">10:00~12:10</span>이누야마성 관람 후 성하마을의 쇼와 골목까지 둘러보기.';
-    }
-    if(t.includes('나고야 복귀 → 히츠마부시')){
-      strong.textContent='메이테쓰 나고야역 → 아츠타 호라이켄 마츠자카야점';
-      desc.innerHTML='<span class="clock">12:20~14:20</span>나고야로 복귀해 아츠타 호라이켄 마츠자카야점에서 히츠마부시 점심.';
-    }
-    if(t==='오스상점가·오스관음'){
-      strong.textContent='사카에 쇼핑 → 오스';
-      desc.innerHTML='<span class="clock">14:20~17:20</span>포켓몬 센터 나고야 → 점프 숍 나고야 → JOYLAB (조이랩) 나고야점 → 오스 상점가 → 오스칸논. 쇼핑 구간은 시간에 따라 체류시간 조정.';
-    }
-    if(t.includes('미라이타워·히사야오도리 → 오아시스21 → Sky-Boat')){
-      strong.textContent='사카에 야경·저녁';
-      desc.innerHTML='<span class="clock">17:30~20:30</span>중부전력 미라이 타워 → 오아시스21 → 선샤인 사카에 → 테바사키 무츠미 → 프린세스 거리.';
-    }
-    if(t.includes('저녁 → 天然温泉アーバンクア → 숙소 2차')){
-      strong.textContent='Urban Quar Spa & Living (어반쿠아) 대욕장 → 숙소';
-      desc.innerHTML='<span class="clock">20:30~22:30</span>Urban Quar Spa & Living에서 대욕장으로 마무리한 뒤 숙소 복귀.';
-    }
-  }
-
-  // 상세 동선: 합쳐진 항목과 중복되는 JOYLAB 단독 leg 제거
-  for(const leg of [...d.querySelectorAll('.leg')]){
-    const title=leg.querySelector('strong')?.textContent || '';
-    if(title.includes('JOYLAB')) leg.remove();
-  }
-
+  // Day 2는 기존 조각을 수정하지 않고 단일 canonical 목록으로 통째로 재구성한다.
   const day2=[...d.querySelectorAll('.absolute-day')].find(x=>x.querySelector('.absolute-head strong')?.textContent.trim()==='Day 2');
   if(day2){
     const head=day2.querySelector('.absolute-head span');
-    if(head) head.textContent='모닝 → 이누야마 → 히츠마부시 → 사카에·오스 → 야경·저녁 → 대욕장';
-    const slots=[...day2.querySelectorAll('.absolute-slot')];
-    const set=(needle,title,sub)=>{const s=slots.find(x=>x.textContent.includes(needle));if(!s)return;const p=s.querySelector('.slot-place');if(p)p.innerHTML='<strong>'+title+'</strong><span>'+sub+'</span>'};
-    set('나고야 모닝','카페 카코 부쵸','모닝 후 메이테쓰 나고야역 → 이누야마');
-    set('이누야마 성하마을','이누야마성 → 이누야마성 쇼와 골목','성·성하마을 산책');
-    set('나고야 복귀','아츠타 호라이켄 마츠자카야점','히츠마부시 점심');
-    set('오스상점가','포켓몬 센터 → 점프 숍 → 조이랩 → 오스 상점가 → 오스칸논','사카에 쇼핑부터 오스까지 연결');
-    set('미라이타워','미라이 타워 → 오아시스21 → 선샤인 사카에','사카에 야경');
-    set('저녁','테바사키 무츠미 → 프린세스 거리','저녁·산책');
-    set('대욕장','Urban Quar Spa & Living (어반쿠아)','대욕장 후 숙소 복귀');
+    if(head) head.textContent='모닝 → 이누야마 → 히츠마부시 → 쇼핑·오스 → 사카에 야경·저녁 → 대욕장';
+    const box=day2.querySelector('.absolute-slots');
+    if(box) box.innerHTML=`
+      <div class="absolute-slot"><div class="slot-time">08:20</div><div class="slot-place"><strong>카페 카코 부쵸</strong><span>숙소 출발 · 나고야 모닝</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">09:20</div><div class="slot-place"><strong>메이테쓰 나고야역 → 이누야마</strong><span>메이테쓰로 이동</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">10:00</div><div class="slot-place"><strong>이누야마성 → 이누야마성 쇼와 골목</strong><span>성 관람 후 성하마을 산책</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">12:20</div><div class="slot-place"><strong>아츠타 호라이켄 마츠자카야점</strong><span>히츠마부시 점심</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">14:20</div><div class="slot-place"><strong>포켓몬 센터 나고야 → 점프 숍 나고야</strong><span>사카에 쇼핑</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">15:30</div><div class="slot-place"><strong>JOYLAB (조이랩) 나고야점 → 오스 상점가 → 오스칸논</strong><span>리쿼샵 후 오스 산책</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">17:40</div><div class="slot-place"><strong>중부전력 미라이 타워 → 오아시스21 → 선샤인 사카에</strong><span>사카에 야경</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">19:20</div><div class="slot-place"><strong>테바사키 무츠미 → 프린세스 거리</strong><span>저녁 · 산책</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">20:50</div><div class="slot-place"><strong>Urban Quar Spa & Living (어반쿠아)</strong><span>대욕장</span></div></div>
+      <div class="absolute-slot"><div class="slot-time">22:30</div><div class="slot-place"><strong>숙소 2차</strong><span>편의점 안주, 짐 정리, Day 3 준비</span></div></div>`;
+  }
 
-    // 병합 후 남는 중복 슬롯 제거: JOYLAB / 히츠마부시 단독 / 오아시스21 단독 / Sky-Boat 단독
-    for(const slot of [...day2.querySelectorAll('.absolute-slot')]){
-      const title=(slot.querySelector('.slot-place strong')?.textContent || '').trim();
-      const sub=(slot.querySelector('.slot-place span')?.textContent || '').trim();
-      if(
-        title.includes('JOYLAB') ||
-        title==='히츠마부시' ||
-        title==='오아시스21' ||
-        title.includes('SUNSHINE SAKAE Sky-Boat') ||
-        title==='Sky-Boat (스카이보트)'
-      ) slot.remove();
-    }
+  // Day 2 상세 동선도 같은 canonical 목록만 사용한다.
+  const day2Choice=[...d.querySelectorAll('.choice')].find(x=>x.querySelector('.choice-head h3')?.textContent.trim().startsWith('Day 2:'));
+  if(day2Choice){
+    const h3=day2Choice.querySelector('.choice-head h3');
+    if(h3) h3.textContent='Day 2: 모닝 → 이누야마 → 히츠마부시 → 사카에·오스 → 야경·저녁 → 대욕장';
+    const summary=day2Choice.querySelector('.choice-head .summary');
+    if(summary) summary.textContent='이누야마 반나절 후 나고야로 돌아와 쇼핑, 오스 산책, 사카에 야경과 저녁, 대욕장까지 이어갑니다.';
+    const legs=day2Choice.querySelector('.legs');
+    if(legs) legs.innerHTML=`
+      <div class="leg"><div><strong>숙소 → 카페 카코 부쵸 → 메이테쓰 나고야역</strong><span><span class="clock">08:20~09:20</span>모닝 후 이누야마 이동 준비.</span></div><div class="time">약 1시간</div></div>
+      <div class="leg"><div><strong>메이테쓰 나고야역 → 이누야마성 → 이누야마성 쇼와 골목</strong><span><span class="clock">09:20~12:10</span>이누야마 이동, 성 관람, 성하마을 산책.</span></div><div class="time">약 3시간</div></div>
+      <div class="leg"><div><strong>아츠타 호라이켄 마츠자카야점</strong><span><span class="clock">12:20~14:10</span>나고야 복귀 후 히츠마부시 점심.</span></div><div class="time">이동+식사</div></div>
+      <div class="leg"><div><strong>포켓몬 센터 나고야 → 점프 숍 나고야</strong><span><span class="clock">14:20~15:30</span>사카에 쇼핑.</span></div><div class="time">약 1시간</div></div>
+      <div class="leg"><div><strong>JOYLAB (조이랩) 나고야점 → 오스 상점가 → 오스칸논</strong><span><span class="clock">15:30~17:20</span>리쿼샵 후 오스 권역 산책.</span></div><div class="time">약 2시간</div></div>
+      <div class="leg"><div><strong>중부전력 미라이 타워 → 오아시스21 → 선샤인 사카에</strong><span><span class="clock">17:40~19:10</span>사카에 야경 코스.</span></div><div class="time">약 1시간 30분</div></div>
+      <div class="leg"><div><strong>테바사키 무츠미 → 프린세스 거리</strong><span><span class="clock">19:20~20:40</span>저녁 후 거리 산책.</span></div><div class="time">약 1시간 20분</div></div>
+      <div class="leg"><div><strong>Urban Quar Spa & Living (어반쿠아) → 숙소</strong><span><span class="clock">20:50~22:30</span>대욕장으로 마무리 후 숙소 복귀.</span></div><div class="time">회복</div></div>`;
+  }
+
+  // 검수 룰: Day 2 상단 시간표에서 핵심 장소는 정확히 1회만 등장해야 한다.
+  if(day2){
+    const text=day2.textContent;
+    const required=['카페 카코 부쵸','이누야마성','아츠타 호라이켄 마츠자카야점','포켓몬 센터 나고야','점프 숍 나고야','JOYLAB','오스 상점가','오스칸논','중부전력 미라이 타워','오아시스21','선샤인 사카에','테바사키 무츠미','프린세스 거리','Urban Quar Spa & Living'];
+    const bad=required.filter(name=>text.split(name).length-1!==1);
+    if(bad.length) console.error('Day 2 duplicate/missing check failed:',bad);
   }
 });
 </script>
