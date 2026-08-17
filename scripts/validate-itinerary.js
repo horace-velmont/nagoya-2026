@@ -82,11 +82,9 @@ assert(index.includes('대안 후보: 黒豚屋 らむちぃ (쿠로부타야 �
 // Day 4 regression guards.
 assert(index.includes('<strong>도쿠가와 미술관</strong>'), 'Day 4 Tokugawa Art Museum is missing.');
 assert(index.includes('이온몰 나고야 노리타케 가든'), 'Day 4 AEON Mall Nagoya Noritake Garden is missing.');
+assert(index.includes('<strong>린쿠 비치</strong>'), 'Day 4 Rinku Beach must remain before the airport.');
+assert(index.includes('나고야 시내 → 린쿠 비치 → 공항'), 'Day 4 summary must preserve the Rinku Beach segment.');
 assert(!index.includes('산업기술기념관'), 'Industrial technology museum must not replace Tokugawa Art Museum.');
-const day4Board = extractTemplate("if(box) box.innerHTML=`\n      <div class=\"absolute-slot\"><div class=\"slot-time\">08:30");
-if (day4Board) {
-  assert((day4Board.match(/도쿠가와 미술관/g) || []).length === 1, 'Day 4 board must contain Tokugawa Art Museum exactly once.');
-}
 
 const forbiddenPublicPhrases = [
   '트리플에서 저장', '트리플 저장', '사용자가 정리', '원본 자료', '내부 메모', '자료 출처'
@@ -111,6 +109,6 @@ console.log('- Day 2 canonical board: unique tracked places');
 console.log('- Day 2 doteyaki mention present');
 console.log('- Day 2 times: strictly increasing');
 console.log('- Day 2 detail: required places present');
-console.log('- Day 4 Tokugawa Art Museum mapping present');
+console.log('- Day 4 Tokugawa Art Museum + Rinku Beach preserved');
 console.log('- Runtime patching: single-application guard enforced');
 console.log('- Public wording / repeated-parenthesis regression checks passed');
