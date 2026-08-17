@@ -1,1 +1,62 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>나고야 3박4일 상세 동선</title></head><body><script>(async()=>{let h=await fetch('./index-base.html?v=20260817-detail-restored').then(r=>r.text());const r=[['矢場とん','黒豚屋 らむちぃ (쿠로부타야 라무치)'],['JOYLAB','JOYLAB (조이라보)'],['Sky-Boat','Sky-Boat (스카이보트)'],['Midland Square','Midland Square (미들랜드 스퀘어)'],['Grand Warehouse','Grand Warehouse (그랜드 웨어하우스)'],['<div class="slot-time">20:45</div>\n                <div class="slot-place"><strong>초밥</strong><span>나고야역권 저녁</span></div>','<div class="slot-time">20:30</div>\n                <div class="slot-place"><strong>KITTE Nagoya (킷테 나고야) 내 초밥집</strong><span>투어 복귀 후 저녁 · 식사 고정</span></div>'],['<strong>투어 복귀 → 초밥</strong>\n                  <span><span class="clock">20:45~21:45</span>나고야역권에서 저녁.</span>','<strong>투어 복귀 → KITTE Nagoya (킷테 나고야) 내 초밥집</strong>\n                  <span><span class="clock">20:30~21:30</span>KITTE 안 초밥집에서 저녁. 식사 고정.</span>'],['<span>초밥 → 돈키호테 → 숙소</span>','<span>KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소</span>']];for(const[a,b]of r)h=h.replaceAll(a,b);document.open();document.write(h);document.close()})()</script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>나고야 3박4일 상세 동선</title>
+  <style>
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}
+    iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}
+  </style>
+</head>
+<body>
+<iframe id="detail" src="./index-base.html?v=20260817-detail-direct" title="나고야 3박4일 상세 동선"></iframe>
+<script>
+const frame=document.getElementById('detail');
+frame.addEventListener('load',()=>{
+  const d=frame.contentDocument;
+  if(!d) return;
+
+  const replacements=[
+    ['矢場とん','黒豚屋 らむちぃ (쿠로부타야 라무치)'],
+    ['Midland Square','Midland Square (미들랜드 스퀘어)'],
+    ['Grand Warehouse','Grand Warehouse (그랜드 웨어하우스)'],
+    ['JOYLAB','JOYLAB (조이라보)'],
+    ['Sky-Boat','Sky-Boat (스카이보트)'],
+    ['Saizeriya','Saizeriya (사이제리야)']
+  ];
+
+  const walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);
+  const nodes=[];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  for(const n of nodes){
+    let t=n.nodeValue;
+    for(const [a,b] of replacements){
+      if(t.includes(a) && !t.includes(b)) t=t.split(a).join(b);
+    }
+    n.nodeValue=t;
+  }
+
+  for(const el of d.querySelectorAll('strong')){
+    const t=el.textContent.trim();
+    if(t==='초밥'){
+      el.textContent='KITTE Nagoya (킷테 나고야) 내 초밥집';
+      const desc=el.nextElementSibling;
+      if(desc) desc.textContent='투어 복귀 후 KITTE 안 초밥집에서 저녁 · 식사 고정';
+    }
+    if(t.includes('투어 복귀 → 초밥')){
+      el.textContent='투어 복귀 → KITTE Nagoya (킷테 나고야) 내 초밥집';
+      const desc=el.nextElementSibling;
+      if(desc) desc.innerHTML='<span class="clock">20:30~21:30</span>KITTE 안 초밥집에서 저녁. 식사 고정.';
+    }
+  }
+
+  for(const el of d.querySelectorAll('span')){
+    if(el.textContent.trim()==='초밥 → 돈키호테 → 숙소'){
+      el.textContent='KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소';
+    }
+  }
+});
+</script>
+</body>
+</html>
