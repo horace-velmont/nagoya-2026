@@ -4,56 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>나고야 3박4일 상세 동선</title>
-  <style>
-    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}
-    iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}
-  </style>
+  <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-detail-direct" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-detail-fixed-3" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
-  const d=frame.contentDocument;
-  if(!d) return;
-
-  const replacements=[
+  const d=frame.contentDocument;if(!d)return;
+  const rules=[
     ['矢場とん','黒豚屋 らむちぃ (쿠로부타야 라무치)'],
     ['Midland Square','Midland Square (미들랜드 스퀘어)'],
     ['Grand Warehouse','Grand Warehouse (그랜드 웨어하우스)'],
     ['JOYLAB','JOYLAB (조이라보)'],
     ['Sky-Boat','Sky-Boat (스카이보트)'],
-    ['Saizeriya','Saizeriya (사이제리야)']
+    ['Saizeriya','Saizeriya (사이제리야)'],
+    ['廣寿司 JR名古屋駅店','KITTE Nagoya (킷테 나고야) 내 초밥집'],
+    ['초밥 → 돈키호테 → 숙소','KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소'],
+    ['다카야마·시라카와고 → 초밥 → 돈키호테','다카야마·시라카와고 → KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테']
   ];
-
-  const walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);
-  const nodes=[];
-  while(walker.nextNode()) nodes.push(walker.currentNode);
-  for(const n of nodes){
-    let t=n.nodeValue;
-    for(const [a,b] of replacements){
-      if(t.includes(a) && !t.includes(b)) t=t.split(a).join(b);
-    }
-    n.nodeValue=t;
-  }
-
-  for(const el of d.querySelectorAll('strong')){
+  const walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+  for(const n of nodes){let t=n.nodeValue;for(const [a,b] of rules){if(t.includes(a)&&!t.includes(b))t=t.split(a).join(b)}n.nodeValue=t}
+  for(const el of d.querySelectorAll('.slot-place strong,strong')){
     const t=el.textContent.trim();
-    if(t==='초밥'){
-      el.textContent='KITTE Nagoya (킷테 나고야) 내 초밥집';
-      const desc=el.nextElementSibling;
-      if(desc) desc.textContent='투어 복귀 후 KITTE 안 초밥집에서 저녁 · 식사 고정';
-    }
-    if(t.includes('투어 복귀 → 초밥')){
-      el.textContent='투어 복귀 → KITTE Nagoya (킷테 나고야) 내 초밥집';
-      const desc=el.nextElementSibling;
-      if(desc) desc.innerHTML='<span class="clock">20:30~21:30</span>KITTE 안 초밥집에서 저녁. 식사 고정.';
-    }
-  }
-
-  for(const el of d.querySelectorAll('span')){
-    if(el.textContent.trim()==='초밥 → 돈키호테 → 숙소'){
-      el.textContent='KITTE Nagoya (킷테 나고야) 내 초밥집 → 돈키호테 → 숙소';
+    if(t==='KITTE Nagoya (킷테 나고야) 내 초밥집'){
+      const desc=el.nextElementSibling;if(desc)desc.textContent='투어 복귀 후 KITTE 안 초밥집에서 저녁 · 식사 고정';
+      const row=el.closest('.absolute-slot');if(row){const tm=row.querySelector('.slot-time');if(tm)tm.textContent='19:30';}
     }
   }
 });
