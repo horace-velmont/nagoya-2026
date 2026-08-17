@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f6f8fb}iframe{display:block;width:100%;height:100%;border:0;background:#f6f8fb}</style>
 </head>
 <body>
-<iframe id="detail" src="./index-base.html?v=20260817-2210" title="나고야 3박4일 상세 동선"></iframe>
+<iframe id="detail" src="./index-base.html?v=20260817-2214-dedup" title="나고야 3박4일 상세 동선"></iframe>
 <script>
 const frame=document.getElementById('detail');
 frame.addEventListener('load',()=>{
@@ -65,7 +65,7 @@ frame.addEventListener('load',()=>{
     }
   }
 
-  // 상세 동선의 기존 JOYLAB 단독 항목 제거
+  // 상세 동선: 합쳐진 항목과 중복되는 JOYLAB 단독 leg 제거
   for(const leg of [...d.querySelectorAll('.leg')]){
     const title=leg.querySelector('strong')?.textContent || '';
     if(title.includes('JOYLAB')) leg.remove();
@@ -79,16 +79,23 @@ frame.addEventListener('load',()=>{
     const set=(needle,title,sub)=>{const s=slots.find(x=>x.textContent.includes(needle));if(!s)return;const p=s.querySelector('.slot-place');if(p)p.innerHTML='<strong>'+title+'</strong><span>'+sub+'</span>'};
     set('나고야 모닝','카페 카코 부쵸','모닝 후 메이테쓰 나고야역 → 이누야마');
     set('이누야마 성하마을','이누야마성 → 이누야마성 쇼와 골목','성·성하마을 산책');
-    set('히츠마부시','아츠타 호라이켄 마츠자카야점','히츠마부시 점심');
+    set('나고야 복귀','아츠타 호라이켄 마츠자카야점','히츠마부시 점심');
     set('오스상점가','포켓몬 센터 → 점프 숍 → 조이랩 → 오스 상점가 → 오스칸논','사카에 쇼핑부터 오스까지 연결');
     set('미라이타워','미라이 타워 → 오아시스21 → 선샤인 사카에','사카에 야경');
     set('저녁','테바사키 무츠미 → 프린세스 거리','저녁·산책');
     set('대욕장','Urban Quar Spa & Living (어반쿠아)','대욕장 후 숙소 복귀');
 
-    // 상단 시간표의 기존 JOYLAB 단독 슬롯도 제거
+    // 병합 후 남는 중복 슬롯 제거: JOYLAB / 히츠마부시 단독 / 오아시스21 단독 / Sky-Boat 단독
     for(const slot of [...day2.querySelectorAll('.absolute-slot')]){
-      const title=slot.querySelector('.slot-place strong')?.textContent || '';
-      if(title.includes('JOYLAB')) slot.remove();
+      const title=(slot.querySelector('.slot-place strong')?.textContent || '').trim();
+      const sub=(slot.querySelector('.slot-place span')?.textContent || '').trim();
+      if(
+        title.includes('JOYLAB') ||
+        title==='히츠마부시' ||
+        title==='오아시스21' ||
+        title.includes('SUNSHINE SAKAE Sky-Boat') ||
+        title==='Sky-Boat (스카이보트)'
+      ) slot.remove();
     }
   }
 });
