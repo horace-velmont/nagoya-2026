@@ -1,20 +1,17 @@
 const fs = require('fs');
 
 const index = fs.readFileSync('index.html', 'utf8');
-const base = fs.readFileSync('index-base.html', 'utf8');
 
 const failures = [];
 const fail = (msg) => failures.push(msg);
 const assert = (cond, msg) => { if (!cond) fail(msg); };
 
-function extractTemplate(afterMarker) {
-  const start = index.indexOf(afterMarker);
+function extractSection(startMarker, endMarker) {
+  const start = index.indexOf(startMarker);
   if (start < 0) return null;
-  const tick1 = index.indexOf('`', start);
-  if (tick1 < 0) return null;
-  const tick2 = index.indexOf('`', tick1 + 1);
-  if (tick2 < 0) return null;
-  return index.slice(tick1 + 1, tick2);
+  const end = index.indexOf(endMarker, start + startMarker.length);
+  if (end < 0) return null;
+  return index.slice(start, end);
 }
 
 const canonicalAliases = [
@@ -32,19 +29,24 @@ const canonicalAliases = [
   { id: 'sunshine_sakae', names: ['선샤인 사카에', 'sunshine sakae', 'sky-boat', '스카이보트'] },
   { id: 'mutsumi', names: ['테바사키 무츠미'] },
   { id: 'princess_street', names: ['프린세스 거리'] },
-  { id: 'urban_quar', names: ['urban quar spa & living', '어반쿠아'] }
+  { id: 'urban_quar', names: ['urban quar spa & living', 'urban quar spa &amp; living', '어반쿠아'] }
 ];
 
-function idsInText(text) {
+function idsInText(text, entries = canonicalAliases) {
   const lower = text.toLowerCase();
   const out = [];
-  for (const entry of canonicalAliases) {
+  for (const entry of entries) {
     if (entry.names.some(n => lower.includes(n.toLowerCase()))) out.push(entry.id);
   }
   return out;
 }
 
-const day2Board = extractTemplate('if(box) box.innerHTML=');
+assert(!index.includes('<iframe'), 'index.html must render the itinerary directly, not through an iframe.');
+assert(!index.includes('contentDocument'), 'Runtime iframe patching must not be used.');
+assert(!index.includes('innerHTML=`'), 'Template-string runtime patching must not be used for canonical itinerary data.');
+assert(!fs.existsSync('index-base.html'), 'Stale index-base.html must not remain as a second itinerary source.');
+
+const day2Board = extractSection('<span>모닝 → 이누야마 → 히츠마부시 → 쇼핑·오스 → 사카에 야경·저녁 → 대욕장</span>', '<strong>Day 3</strong>');
 assert(day2Board, 'Day 2 canonical board template is missing.');
 if (day2Board) {
   const ids = idsInText(day2Board);
@@ -60,7 +62,7 @@ if (day2Board) {
   }
 }
 
-const day2Legs = extractTemplate('if(legs) legs.innerHTML=');
+const day2Legs = extractSection('<h3>Day 2:', '<h2>끼니 계획</h2>');
 assert(day2Legs, 'Day 2 canonical detail template is missing.');
 if (day2Legs) {
   for (const entry of canonicalAliases) {
@@ -71,12 +73,9 @@ if (day2Legs) {
   assert(day2Legs.includes('도테야끼'), 'Day 2 detail must mention 도테야끼.');
 }
 
-assert(!index.includes('setInterval('), 'Repeated runtime patching is forbidden (setInterval found).');
-assert(!index.includes('applyFixes'), 'Repeated applyFixes-style patching is forbidden.');
-assert(index.includes("d.body.dataset.fixed='1'"), 'Single-application render guard is missing.');
 assert(index.includes("KITTE Nagoya (킷테 나고야) 내 초밥집"), 'Day 3 KITTE sushi mapping is missing.');
-assert(index.includes("Urban Quar Spa & Living (어반쿠아)"), 'Urban Quar mapping is missing.');
-assert(index.includes("['矢場とん','矢場とん (야바톤)']"), 'Day 1 Yabaton mapping is missing.');
+assert(index.includes("Urban Quar Spa &amp; Living (어반쿠아)"), 'Urban Quar mapping is missing.');
+assert(index.includes("矢場とん (야바톤)"), 'Day 1 Yabaton mapping is missing.');
 assert(index.includes('대안 후보: 黒豚屋 らむちぃ (쿠로부타야 라무치)'), 'Ramuchi must remain as a Day 1 backup candidate.');
 
 // Day 4 regression guards.
@@ -86,16 +85,35 @@ assert(index.includes('<strong>린쿠 비치</strong>'), 'Day 4 Rinku Beach must
 assert(index.includes('나고야 시내 → 린쿠 비치 → 공항'), 'Day 4 summary must preserve the Rinku Beach segment.');
 assert(!index.includes('산업기술기념관'), 'Industrial technology museum must not replace Tokugawa Art Museum.');
 
+const day4Entries = [
+  { id: 'nagoya_castle', names: ['나고야성'] },
+  { id: 'tokugawa', names: ['도쿠가와 미술관'] },
+  { id: 'noritake', names: ['노리타케의 숲'] },
+  { id: 'saizeriya', names: ['사이제리아'] },
+  { id: 'aeon_noritake', names: ['이온몰 나고야 노리타케 가든'] },
+  { id: 'rinku_beach', names: ['린쿠 비치'] },
+  { id: 'airport', names: ['중부국제공항', 'NGO'] }
+];
+const day4Board = extractSection('<strong>Day 4 · 나고야 시내 → 린쿠 비치 → 공항</strong>', '<div class="route-detail">');
+assert(day4Board, 'Day 4 canonical board is missing.');
+if (day4Board) {
+  const ids = idsInText(day4Board, day4Entries);
+  for (const entry of day4Entries) {
+    const count = ids.filter(id => id === entry.id).length;
+    assert(count >= 1, `Day 4 board must contain ${entry.id}; found ${count}.`);
+  }
+}
+
 const forbiddenPublicPhrases = [
-  '트리플에서 저장', '트리플 저장', '사용자가 정리', '원본 자료', '내부 메모', '자료 출처'
+  '트리플에서 저장', '트리플 저장', '사용자가 정리', '원본 자료', '내부 메모', '자료 출처',
+  '공통', '후보군', 'Google 지도 후보', '내 니즈', '이 일정의 중심'
 ];
 for (const phrase of forbiddenPublicPhrases) {
-  assert(!index.includes(phrase) && !base.includes(phrase), `Forbidden public phrase found: ${phrase}`);
+  assert(!index.includes(phrase), `Forbidden public phrase found: ${phrase}`);
 }
 
 const repeatedParen = /(\([^()]{2,40}\))(?:\s*\1)+/;
 assert(!repeatedParen.test(index), 'Repeated parenthetical translation detected in index.html.');
-assert(!repeatedParen.test(base), 'Repeated parenthetical translation detected in index-base.html.');
 
 if (failures.length) {
   console.error('\nItinerary validation FAILED:\n');
@@ -110,5 +128,5 @@ console.log('- Day 2 doteyaki mention present');
 console.log('- Day 2 times: strictly increasing');
 console.log('- Day 2 detail: required places present');
 console.log('- Day 4 Tokugawa Art Museum + Rinku Beach preserved');
-console.log('- Runtime patching: single-application guard enforced');
+console.log('- Direct HTML rendering: no iframe/runtime itinerary patching');
 console.log('- Public wording / repeated-parenthesis regression checks passed');
