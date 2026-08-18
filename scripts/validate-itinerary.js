@@ -61,6 +61,8 @@ if (day2Board) {
   assert(day2Board.includes('노렌가이 사카에1번출구'), 'Day 2 board must mention Noren-gai Sakae Exit 1.');
   assert(day2Board.indexOf('노렌가이 사카에1번출구') > day2Board.indexOf('프린세스 거리'), 'Day 2 board must place Noren-gai after Princess Street.');
   assert(day2Board.includes('하시고 문화'), 'Day 2 board must mention hashigo culture at Noren-gai.');
+  assert(day2Board.includes('숙소 2차'), 'Day 2 board must end with lodging second round after the bath.');
+  assert(day2Board.indexOf('숙소 2차') > day2Board.indexOf('Urban Quar Spa &amp; Living'), 'Day 2 board must place lodging second round after Urban Quar.');
   const times = [...day2Board.matchAll(/slot-time\">(\d{2}:\d{2})/g)].map(m => m[1]);
   const minutes = times.map(t => Number(t.slice(0,2))*60 + Number(t.slice(3)));
   for (let i = 1; i < minutes.length; i++) {
@@ -83,6 +85,8 @@ if (day2Legs) {
   assert(day2Legs.includes('노렌가이 사카에1번출구'), 'Day 2 detail must mention Noren-gai Sakae Exit 1.');
   assert(day2Legs.indexOf('노렌가이 사카에1번출구') > day2Legs.indexOf('프린세스 거리'), 'Day 2 detail must place Noren-gai after Princess Street.');
   assert(day2Legs.includes('하시고 문화'), 'Day 2 detail must mention hashigo culture at Noren-gai.');
+  assert(day2Legs.includes('숙소 2차'), 'Day 2 detail must mention lodging second round after Urban Quar.');
+  assert(day2Legs.indexOf('숙소 2차') > day2Legs.indexOf('Urban Quar Spa &amp; Living'), 'Day 2 detail must place lodging second round after Urban Quar.');
 }
 
 assert(index.includes("KITTE Nagoya (킷테 나고야) 내 초밥집"), 'Day 3 KITTE sushi mapping is missing.');
@@ -92,6 +96,7 @@ assert(index.includes('대안 후보: 黒豚屋 らむちぃ (쿠로부타야 �
 assert(index.includes('오스상점가 당고·크레페'), 'Osu dango and crepe meal note is missing.');
 assert(index.includes('프린세스 거리 도테야끼 2차'), 'Princess Street doteyaki second-round note is missing.');
 assert(index.includes('노렌가이 사카에1번출구 하시고 문화'), 'Noren-gai hashigo culture summary is missing.');
+assert(index.includes('대욕장 후 숙소 2차'), 'Day 2 lodging second-round note after bath is missing.');
 
 // Day 4 regression guards.
 assert(index.includes('<strong>도쿠가와 미술관</strong>'), 'Day 4 Tokugawa Art Museum is missing.');
@@ -121,7 +126,7 @@ if (day4Board) {
 
 const forbiddenPublicPhrases = [
   '트리플에서 저장', '트리플 저장', '사용자가 정리', '원본 자료', '내부 메모', '자료 출처',
-  '공통', '후보군', 'Google 지도 후보', '내 니즈', '이 일정의 중심'
+  '공통', '후보군', '시간 남으면', '시간 여유 있을 때', 'Google 지도 후보', '내 니즈', '이 일정의 중심'
 ];
 for (const phrase of forbiddenPublicPhrases) {
   assert(!index.includes(phrase), `Forbidden public phrase found: ${phrase}`);
