@@ -55,6 +55,8 @@ if (day2Board) {
     assert(count === 1, `Day 2 board must contain ${entry.id} exactly once; found ${count}.`);
   }
   assert((day2Board.match(/도테야끼/g) || []).length === 1, 'Day 2 board must mention 도테야끼 exactly once.');
+  assert(day2Board.includes('당고'), 'Day 2 board must mention 오스 상점가 당고.');
+  assert(day2Board.includes('크레페'), 'Day 2 board must mention 오스 상점가 크레페.');
   const times = [...day2Board.matchAll(/slot-time\">(\d{2}:\d{2})/g)].map(m => m[1]);
   const minutes = times.map(t => Number(t.slice(0,2))*60 + Number(t.slice(3)));
   for (let i = 1; i < minutes.length; i++) {
@@ -71,12 +73,15 @@ if (day2Legs) {
     assert(matched.length >= 1, `Day 2 detail is missing ${entry.id}.`);
   }
   assert(day2Legs.includes('도테야끼'), 'Day 2 detail must mention 도테야끼.');
+  assert(day2Legs.includes('당고'), 'Day 2 detail must mention 오스 상점가 당고.');
+  assert(day2Legs.includes('크레페'), 'Day 2 detail must mention 오스 상점가 크레페.');
 }
 
 assert(index.includes("KITTE Nagoya (킷테 나고야) 내 초밥집"), 'Day 3 KITTE sushi mapping is missing.');
 assert(index.includes("Urban Quar Spa &amp; Living (어반쿠아)"), 'Urban Quar mapping is missing.');
 assert(index.includes("矢場とん (야바톤)"), 'Day 1 Yabaton mapping is missing.');
 assert(index.includes('대안 후보: 黒豚屋 らむちぃ (쿠로부타야 라무치)'), 'Ramuchi must remain as a Day 1 backup candidate.');
+assert(index.includes('오스상점가 당고·크레페'), 'Osu dango and crepe meal note is missing.');
 
 // Day 4 regression guards.
 assert(index.includes('<strong>도쿠가와 미술관</strong>'), 'Day 4 Tokugawa Art Museum is missing.');
