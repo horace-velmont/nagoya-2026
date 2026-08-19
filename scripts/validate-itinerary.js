@@ -46,6 +46,25 @@ assert(!index.includes('contentDocument'), 'Runtime iframe patching must not be 
 assert(!index.includes('innerHTML=`'), 'Template-string runtime patching must not be used for canonical itinerary data.');
 assert(!fs.existsSync('index-base.html'), 'Stale index-base.html must not remain as a second itinerary source.');
 
+// Day 1 regression guards: Nana-chan must be a real stop between luggage storage and lunch.
+const day1Board = extractSection('<strong>Day 1</strong>', '<strong>Day 2</strong>');
+assert(day1Board, 'Day 1 canonical board is missing.');
+if (day1Board) {
+  assert((day1Board.match(/나나짱 인형/g) || []).length === 1, 'Day 1 board must contain Nana-chan exactly once.');
+  assert(day1Board.includes('ナナちゃん人形'), 'Day 1 Nana-chan original Japanese label is missing.');
+  assert(day1Board.indexOf('나나짱 인형') > day1Board.indexOf('나고야역'), 'Day 1 Nana-chan must come after Nagoya Station luggage storage.');
+  assert(day1Board.indexOf('나나짱 인형') < day1Board.indexOf('矢場とん'), 'Day 1 Nana-chan must come before Yabaton lunch.');
+  const times = [...day1Board.matchAll(/slot-time\">(\d{2}:\d{2})/g)].map(m => m[1]);
+  const minutes = times.map(t => Number(t.slice(0,2))*60 + Number(t.slice(3)));
+  for (let i = 1; i < minutes.length; i++) {
+    assert(minutes[i] > minutes[i-1], `Day 1 time order is not strictly increasing at ${times[i-1]} -> ${times[i]}.`);
+  }
+}
+const day1Detail = extractSection('<h3>Day 1:', '<h3>Day 2:');
+assert(day1Detail && day1Detail.includes('나나짱 인형'), 'Day 1 detail must include Nana-chan photo stop.');
+assert(index.includes('나고야역·나나짱 인형'), 'Day 1 core route must include Nana-chan.');
+assert(index.includes('나나짱 인형과 기념사진'), 'Day 1 summary must mention the Nana-chan photo.');
+
 const day2Board = extractSection('<span>모닝 → 이누야마 → 히츠마부시 → 쇼핑·오스 → 사카에 야경·저녁 → 대욕장</span>', '<strong>Day 3</strong>');
 assert(day2Board, 'Day 2 canonical board template is missing.');
 if (day2Board) {
@@ -142,6 +161,7 @@ if (failures.length) {
 }
 
 console.log('Itinerary validation passed.');
+console.log('- Day 1 Nana-chan photo stop present and ordered before lunch');
 console.log('- Day 1 Yabaton primary / Ramuchi backup mapping present');
 console.log('- Day 2 canonical board: unique tracked places');
 console.log('- Day 2 doteyaki mention present');
