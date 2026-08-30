@@ -83,6 +83,7 @@ if (day2Board) {
   assert((day2Board.match(/도테야키/g) || []).length === 1, 'Day 2 board must mention 도테야키 exactly once.');
   assert(day2Board.includes('당고'), 'Day 2 board must mention 오스 상점가 당고.');
   assert(day2Board.includes('크레페'), 'Day 2 board must mention 오스 상점가 크레페.');
+  assert(day2Board.includes('루니 셔츠'), 'Day 2 board must mention Looney shirt shopping.');
   assert(day2Board.includes('콘파루'), 'Day 2 board must mention Konparu at Osu.');
   assert(day2Board.indexOf('도테야키') > day2Board.indexOf('シマショウ'), 'Day 2 board must place doteyaki at Shimasho, not Osu snacks.');
   assert(day2Board.includes('노렌가이 사카에1번출구'), 'Day 2 board must mention Noren-gai Sakae Exit 1.');
@@ -108,6 +109,7 @@ if (day2Legs) {
   assert(day2Legs.includes('도테야키'), 'Day 2 detail must mention 도테야키.');
   assert(day2Legs.includes('당고'), 'Day 2 detail must mention 오스 상점가 당고.');
   assert(day2Legs.includes('크레페'), 'Day 2 detail must mention 오스 상점가 크레페.');
+  assert(day2Legs.includes('루니 셔츠'), 'Day 2 detail must mention Looney shirt shopping.');
   assert(day2Legs.includes('콘파루'), 'Day 2 detail must mention Konparu at Osu.');
   assert(day2Legs.indexOf('도테야키') > day2Legs.indexOf('シマショウ'), 'Day 2 detail must place doteyaki at Shimasho.');
   assert(day2Legs.includes('노렌가이 사카에1번출구'), 'Day 2 detail must mention Noren-gai Sakae Exit 1.');
@@ -122,7 +124,7 @@ assert(index.includes('鮨 さわ田 (스시사와다)'), 'Day 3 Sushi Sawada ma
 assert(index.includes("Urban Quar Spa &amp; Living (어반쿠아)"), 'Urban Quar mapping is missing.');
 assert(index.includes("矢場とん (야바톤)"), 'Day 1 Yabaton mapping is missing.');
 assert(index.includes('海鮮丼と唐揚げ 百海里'), 'Day 2 kaisendon place is missing.');
-assert(index.includes('오스상점가 당고·크레페·콘파루'), 'Osu dango, crepe, and Konparu meal note is missing.');
+assert(index.includes('오스상점가 루니 셔츠·당고·크레페·콘파루'), 'Osu Looney shirt, dango, crepe, and Konparu note is missing.');
 assert(index.includes('테바사키 무츠미'), 'Day 2 tebasaki Mutsumi place is missing.');
 assert(index.includes('シマショウ (시마쇼)'), 'Shimasho doteyaki place is missing.');
 assert(index.includes('노렌가이 사카에1번출구 하시고 문화'), 'Noren-gai hashigo culture summary is missing.');
@@ -174,7 +176,7 @@ if (failures.length) {
 
 console.log('Itinerary validation passed.');
 console.log('- Day 1 μSKY, Nana-chan, and Chubu Airport Yabaton backup mapping present');
-console.log('- Day 2 canonical board: kaisendon, Konparu, Mutsumi, Shimasho, Noren-gai, bath');
+console.log('- Day 2 canonical board: kaisendon, Looney shirt, Konparu, Mutsumi, Shimasho, Noren-gai, bath');
 console.log('- Day 3 Sushi Sawada mapping present');
 console.log('- Day 2 times: strictly increasing');
 console.log('- Day 2 detail: required places present');
