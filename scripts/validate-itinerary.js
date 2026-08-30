@@ -18,6 +18,7 @@ const canonicalAliases = [
   { id: 'cafe_kako', names: ['카페 카코 부쵸'] },
   { id: 'inuyama_castle', names: ['이누야마성'] },
   { id: 'showa_alley', names: ['이누야마성 쇼와 골목'] },
+  { id: 'atsuta_horaiken', names: ['아츠타 호라이켄 마츠자카야점'] },
   { id: 'kaisendon', names: ['海鮮丼と唐揚げ 百海里', '카이센동'] },
   { id: 'pokemon_center', names: ['포켓몬 센터 나고야'] },
   { id: 'jump_shop', names: ['점프 숍 나고야'] },
@@ -72,7 +73,7 @@ assert(index.includes('나나짱 인형과 기념사진'), 'Day 1 summary must m
 assert(index.includes('야바톤 중부국제공항점'), 'Day 1 meal plan must mention Chubu Airport Yabaton.');
 assert(!index.includes('黒豚屋 らむちぃ'), 'Ramuchi must not remain after switching the Day 1 alternative to Chubu Airport Yabaton.');
 
-const day2Board = extractSection('<span>모닝 → 이누야마 → 카이센동 → 쇼핑·오스 → 사카에 야경·저녁 → 대욕장</span>', '<strong>Day 3</strong>');
+const day2Board = extractSection('<span>모닝 → 이누야마 → 장어덮밥 → 쇼핑·오스 → 사카에 야경·카이센동 → 대욕장</span>', '<strong>Day 3</strong>');
 assert(day2Board, 'Day 2 canonical board template is missing.');
 if (day2Board) {
   const ids = idsInText(day2Board);
@@ -81,6 +82,8 @@ if (day2Board) {
     assert(count === 1, `Day 2 board must contain ${entry.id} exactly once; found ${count}.`);
   }
   assert((day2Board.match(/도테야키/g) || []).length === 1, 'Day 2 board must mention 도테야키 exactly once.');
+  assert(day2Board.indexOf('장어덮밥') < day2Board.indexOf('쇼핑·오스'), 'Day 2 board must place unagi lunch before shopping.');
+  assert(day2Board.indexOf('카이센동') > day2Board.indexOf('사카에 야경'), 'Day 2 board must place kaisendon at dinner, not lunch.');
   assert(day2Board.includes('당고'), 'Day 2 board must mention 오스 상점가 당고.');
   assert(day2Board.includes('크레페'), 'Day 2 board must mention 오스 상점가 크레페.');
   assert(day2Board.includes('루니 셔츠'), 'Day 2 board must mention Looney shirt shopping.');
@@ -124,6 +127,9 @@ assert(index.includes('鮨 さわ田 (스시사와다)'), 'Day 3 Sushi Sawada ma
 assert(index.includes("Urban Quar Spa &amp; Living (어반쿠아)"), 'Urban Quar mapping is missing.');
 assert(index.includes("矢場とん (야바톤)"), 'Day 1 Yabaton mapping is missing.');
 assert(index.includes('海鮮丼と唐揚げ 百海里'), 'Day 2 kaisendon place is missing.');
+assert(index.includes('Day 2 저녁. 사카에 야경 뒤 먹는 카이센동.'), 'Day 2 kaisendon must be dinner.');
+assert(index.includes('아츠타 호라이켄 마츠자카야점'), 'Day 2 unagi lunch place is missing.');
+assert(index.includes('장어덮밥 점심'), 'Day 2 unagi must be lunch.');
 assert(index.includes('오스상점가 루니 셔츠·당고·크레페·콘파루'), 'Osu Looney shirt, dango, crepe, and Konparu note is missing.');
 assert(index.includes('테바사키 무츠미'), 'Day 2 tebasaki Mutsumi place is missing.');
 assert(index.includes('シマショウ (시마쇼)'), 'Shimasho doteyaki place is missing.');
@@ -176,7 +182,7 @@ if (failures.length) {
 
 console.log('Itinerary validation passed.');
 console.log('- Day 1 μSKY, Nana-chan, and Chubu Airport Yabaton backup mapping present');
-console.log('- Day 2 canonical board: kaisendon, Looney shirt, Konparu, Mutsumi, Shimasho, Noren-gai, bath');
+console.log('- Day 2 canonical board: unagi lunch, Looney shirt, Konparu, kaisendon dinner, Mutsumi, Shimasho, Noren-gai, bath');
 console.log('- Day 3 Sushi Sawada mapping present');
 console.log('- Day 2 times: strictly increasing');
 console.log('- Day 2 detail: required places present');
