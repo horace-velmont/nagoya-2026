@@ -152,6 +152,7 @@ assert(index.includes('나고야 시내 → 린쿠 비치 → 공항'), 'Day 4 s
 assert(!index.includes('산업기술기념관'), 'Industrial technology museum must not replace Tokugawa Art Museum.');
 
 const day4Entries = [
+  { id: 'yanagibashi', names: ['야나기바시 시장', '柳橋中央市場'] },
   { id: 'nagoya_castle', names: ['나고야성'] },
   { id: 'tokugawa', names: ['도쿠가와 미술관'] },
   { id: 'noritake', names: ['노리타케의 숲'] },
@@ -169,6 +170,22 @@ if (day4Board) {
     assert(count >= 1, `Day 4 board must contain ${entry.id}; found ${count}.`);
   }
 }
+
+if (day4Board) {
+  const slots = [...day4Board.matchAll(/<div class="slot-place">([\s\S]*?)<\/div>/g)].map(m => m[1]);
+  const marketSlots = slots.filter(s => /야나기바시 시장|柳橋中央市場/.test(s));
+  assert(marketSlots.length === 1, 'Day 4 must contain exactly one Yanagibashi market slot.');
+  assert(slots[0].includes('야나기바시 시장'), 'Day 4 must begin with Yanagibashi market before checkout.');
+  const times = [...day4Board.matchAll(/slot-time">(\d{2}:\d{2})/g)].map(m => m[1]);
+  assert(times[0] === '07:30', 'Day 4 market breakfast must start at 07:30.');
+  for (let i = 1; i < times.length; i++) {
+    assert(times[i] > times[i - 1], 'Day 4 times must be strictly increasing.');
+  }
+}
+const day4Meals = extractSection('<h3>Day 4</h3>', '<h2>식사</h2>');
+assert(day4Meals && day4Meals.includes('야나기바시 시장'), 'Day 4 breakfast must match the market itinerary.');
+const day4Detail = extractSection('<h4>Day 4 나고야 시내', '<h2>대체 일정</h2>');
+assert(day4Detail && day4Detail.includes('07:30~08:20') && day4Detail.includes('야나기바시 시장'), 'Day 4 detail must include the morning market visit.');
 
 const forbiddenPublicPhrases = [
   '트리플에서 저장', '트리플 저장', '사용자가 정리', '원본 자료', '내부 메모', '자료 출처',
