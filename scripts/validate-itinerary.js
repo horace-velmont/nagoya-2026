@@ -80,9 +80,12 @@ assert(index.includes('공항점 미소카츠'), 'Day 1 meal plan must place Chu
 assert(index.includes('후지가오카 된장라멘'), 'Day 1 meal plan must place miso ramen at lunch.');
 assert(!index.includes('黒豚屋 らむちぃ'), 'Ramuchi must not remain after switching the Day 1 alternative to Chubu Airport Yabaton.');
 
-const day2Board = extractSection('<span>모닝 → 이누야마 → 장어덮밥 → 쇼핑·오스 → 사카에 야경·카이센동 → 대욕장</span>', '<strong>Day 3</strong>');
+const day2Board = extractSection('<span>아침 식사 → 카페 → 이누야마 → 장어덮밥 → 쇼핑·오스 → 사카에 야경·카이센동 → 대욕장</span>', '<strong>Day 3</strong>');
 assert(day2Board, 'Day 2 canonical board template is missing.');
 if (day2Board) {
+  const slots = [...day2Board.matchAll(/<div class="slot-place">([\s\S]*?)<\/div>/g)].map(m => m[1]);
+  assert(slots.filter(s => s.includes('<strong>나고야 신파치 쇼쿠도</strong>')).length === 1, 'Day 2 must contain exactly one Shinpachi breakfast slot.');
+  assert(slots[0].includes('신파치 쇼쿠도') && slots[1].includes('카페 카코 부쵸'), 'Day 2 breakfast must precede the cafe.');
   const ids = idsInText(day2Board);
   for (const entry of canonicalAliases) {
     const count = ids.filter(id => id === entry.id).length;
@@ -186,6 +189,10 @@ const day4Meals = extractSection('<h3>Day 4</h3>', '<h2>식사</h2>');
 assert(day4Meals && day4Meals.includes('야나기바시 시장'), 'Day 4 breakfast must match the market itinerary.');
 const day4Detail = extractSection('<h4>Day 4 나고야 시내', '<h2>대체 일정</h2>');
 assert(day4Detail && day4Detail.includes('07:30~08:20') && day4Detail.includes('야나기바시 시장'), 'Day 4 detail must include the morning market visit.');
+
+const day2Meals = extractSection('<h3>Day 2</h3>', '<h3>Day 3</h3>');
+assert(day2Meals && day2Meals.includes('나고야 신파치 쇼쿠도 → 카페 카코 부쵸'), 'Day 2 meal plan must put Shinpachi before the cafe.');
+assert(day2Legs && day2Legs.includes('숙소 → 나고야 신파치 쇼쿠도 → 카페 카코 부쵸'), 'Day 2 detail must put Shinpachi before the cafe.');
 
 const forbiddenPublicPhrases = [
   '트리플에서 저장', '트리플 저장', '사용자가 정리', '원본 자료', '내부 메모', '자료 출처',
