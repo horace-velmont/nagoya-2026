@@ -48,19 +48,19 @@ assert(!index.includes('contentDocument'), 'Runtime iframe patching must not be 
 assert(!index.includes('innerHTML=`'), 'Template-string runtime patching must not be used for canonical itinerary data.');
 assert(!fs.existsSync('index-base.html'), 'Stale index-base.html must not remain as a second itinerary source.');
 
-const day1Board = extractSection('<span>도착 → 공항 야바톤 → 나나짱 → 된장라멘 → 지브리파크</span>', '<strong>Day 2</strong>');
+const day1Board = extractSection('<span>도착 → 공항 야바톤 → 나나짱 → 키시멘 → 지브리파크</span>', '<strong>Day 2</strong>');
 assert(day1Board, 'Day 1 canonical board is missing.');
 if (day1Board) {
   assert(day1Board.includes('矢場とん 中部国際空港店 (야바톤 중부국제공항점)'), 'Day 1 board must place Chubu Airport Yabaton as breakfast.');
   assert(day1Board.includes('μSKY(뮤스카이) → 나고야역'), 'Day 1 board must include μSKY airport transfer.');
   assert((day1Board.match(/나나짱 인형/g) || []).length === 1, 'Day 1 board must contain Nana-chan exactly once.');
   assert(day1Board.includes('ナナちゃん人形'), 'Day 1 Nana-chan original Japanese label is missing.');
-  assert(day1Board.includes('麺家 半蔵'), 'Day 1 board must include Menya Hanzo lunch.');
-  assert(day1Board.includes('된장라멘'), 'Day 1 board must include miso ramen lunch.');
+  assert(day1Board.includes('나고야역 키시멘'), 'Day 1 board must include Nagoya Station kishimen lunch.');
+  assert(day1Board.includes('키시멘'), 'Day 1 board must include kishimen lunch.');
   assert(day1Board.indexOf('矢場とん 中部国際空港店') < day1Board.indexOf('μSKY(뮤스카이) → 나고야역'), 'Day 1 must eat airport Yabaton before μSKY.');
   assert(day1Board.indexOf('나나짱 인형') > day1Board.indexOf('나고야역'), 'Day 1 Nana-chan must come after Nagoya Station luggage storage.');
-  assert(day1Board.indexOf('麺家 半蔵') > day1Board.indexOf('나나짱 인형'), 'Day 1 Menya Hanzo lunch must come after Nana-chan.');
-  assert(day1Board.indexOf('麺家 半蔵') < day1Board.indexOf('지브리파크 이동'), 'Day 1 Menya Hanzo lunch must come before Ghibli Park.');
+  assert(day1Board.indexOf('나고야역 키시멘') > day1Board.indexOf('나나짱 인형'), 'Day 1 Nagoya Station kishimen lunch must come after Nana-chan.');
+  assert(day1Board.indexOf('나고야역 키시멘') < day1Board.indexOf('지브리파크 이동'), 'Day 1 Nagoya Station kishimen lunch must come before Ghibli Park.');
   assert(!day1Board.includes('<strong>矢場とん (야바톤)</strong>'), 'Yabaton must not remain as the Day 1 city lunch.');
   assert(!day1Board.includes('黒豚屋 らむちぃ'), 'Ramuchi must not remain as the Day 1 lunch alternative.');
   const times = [...day1Board.matchAll(/slot-time\">(\d{2}:\d{2})/g)].map(m => m[1]);
@@ -73,11 +73,11 @@ const day1Detail = extractSection('<h3>Day 1:', '<h3>Day 2:');
 assert(day1Detail && day1Detail.includes('μSKY(뮤스카이)'), 'Day 1 detail must include μSKY airport transfer.');
 assert(day1Detail && day1Detail.includes('나나짱 인형'), 'Day 1 detail must include Nana-chan photo stop.');
 assert(day1Detail && day1Detail.includes('矢場とん 中部国際空港店'), 'Day 1 detail must mention Chubu Airport Yabaton breakfast.');
-assert(day1Detail && day1Detail.includes('麺家 半蔵'), 'Day 1 detail must include Menya Hanzo lunch.');
+assert(day1Detail && day1Detail.includes('나고야역 키시멘'), 'Day 1 detail must include Nagoya Station kishimen lunch.');
 assert(index.includes('나고야역·나나짱 인형'), 'Day 1 core route must include Nana-chan.');
 assert(index.includes('나나짱 인형과 기념사진'), 'Day 1 summary must mention the Nana-chan photo.');
 assert(index.includes('공항점 미소카츠'), 'Day 1 meal plan must place Chubu Airport Yabaton at breakfast.');
-assert(index.includes('후지가오카 된장라멘'), 'Day 1 meal plan must place miso ramen at lunch.');
+assert(index.includes('나고야역 키시멘'), 'Day 1 meal plan must place kishimen at lunch.');
 assert(!index.includes('黒豚屋 らむちぃ'), 'Ramuchi must not remain after switching the Day 1 alternative to Chubu Airport Yabaton.');
 
 const day2Board = extractSection('<span>아침 식사 → 카페 → 이누야마 → 장어덮밥 → 쇼핑·오스 → 사카에 야경·카이센동 → 대욕장</span>', '<strong>Day 3</strong>');
@@ -205,6 +205,13 @@ for (const phrase of forbiddenPublicPhrases) {
 const repeatedParen = /(\([^()]{2,40}\))(?:\s*\1)+/;
 assert(!repeatedParen.test(index), 'Repeated parenthetical translation detected in index.html.');
 
+
+assert(!index.includes('麺家 半蔵') && !index.includes('된장라멘'), 'Replaced ramen lunch must not remain.');
+assert((day1Board.match(/<strong>나고야역 키시멘<\/strong>/g) || []).length === 1, 'Day 1 must have exactly one kishimen lunch slot.');
+assert(/slot-time">19:00<\/div>\s*<div class="slot-place"><strong>焼肉ジャック/.test(day1Board), 'Yakiniku reservation must be at 19:00.');
+assert(/slot-time">17:20<\/div>\s*<div class="slot-place"><strong>지브리파크 출발/.test(day1Board), 'Ghibli departure must be 17:20 after closing and station walk.');
+assert(day1Detail.includes('15:10~17:00'), 'Ghibli sightseeing must end at 17:00 closing.');
+
 if (failures.length) {
   console.error('\nItinerary validation FAILED:\n');
   for (const f of failures) console.error(`- ${f}`);
@@ -212,7 +219,7 @@ if (failures.length) {
 }
 
 console.log('Itinerary validation passed.');
-console.log('- Day 1 Chubu Airport Yabaton breakfast, μSKY, Nana-chan, and Menya Hanzo lunch mapping present');
+console.log('- Day 1 Chubu Airport Yabaton breakfast, μSKY, Nana-chan, and Nagoya Station kishimen lunch mapping present');
 console.log('- Day 2 canonical board: unagi lunch, Looney shirt, Konparu, kaisendon dinner, Mutsumi, Shimasho, Noren-gai, bath');
 console.log('- Day 3 Sushi Sawada mapping present');
 console.log('- Day 2 times: strictly increasing');
